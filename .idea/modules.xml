@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/interactionserver.iml" filepath="$PROJECT_DIR$/.idea/interactionserver.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../wordGame/.idea/wordGame.iml" filepath="$PROJECT_DIR$/../wordGame/.idea/wordGame.iml" />
     </modules>
   </component>
 </project>
