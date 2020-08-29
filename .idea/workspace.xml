@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4999b106-32f7-4096-80fe-8baa59c19f8c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/interactionserver.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/wordGame.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="4999b106-32f7-4096-80fe-8baa59c19f8c" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,7 +18,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../wordGame" />
   </component>
   <component name="IgnoredFileRootStore">
     <option name="generatedRoots">
@@ -114,7 +107,7 @@
       <workItem from="1598561910869" duration="13715000" />
       <workItem from="1598608682226" duration="1673000" />
       <workItem from="1598623647946" duration="10196000" />
-      <workItem from="1598644584950" duration="14476000" />
+      <workItem from="1598644584950" duration="15709000" />
     </task>
     <servers />
   </component>
