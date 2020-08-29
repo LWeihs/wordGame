@@ -1,12 +1,12 @@
 import Globals from "./globals";
 import disableSubmitAllForms from "./helpers/formDisable";
 import BannerControls from "./game/bannerControls";
-import ConnectionControls from "./game/connection";
-import PlayerListControls from "./game/playerList";
+import ConnectionControls from "./game/connectionControls";
+import PlayerListControls from "./game/playerListControls";
 import GameControls from "./game/gameControls";
 import TimerControls from "./game/timerControls";
-import ChatControls from "./game/chat";
-import OptionControls from "./game/options";
+import ChatControls from "./game/chatControls";
+import OptionControls from "./game/optionControls";
 import GameStartControls from "./game/gameStarting";
 
 //log important information about the user (received on established server connection)
