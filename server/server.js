@@ -1,5 +1,5 @@
 const runStaticServer = require('./staticServer');
 const runGameServer = require('./gameServerRunner');
 
-runStaticServer();
-runGameServer();
+const server = runStaticServer();
+runGameServer(server);

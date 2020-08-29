@@ -27,6 +27,8 @@ function runStaticServer() {
     app.listen(port, () => {
         console.log(`Static server serves on port ${port}`);
     });
+
+    return app;
 }
 
 module.exports = runStaticServer;

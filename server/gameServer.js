@@ -14,10 +14,10 @@ class GameServer {
     /**
      * Set up the server, set port.
      *
-     * @param port - port number
+     * @param server - express server or port number
      */
-    constructor(port) {
-        this._port = port;
+    constructor(server) {
+        this._server = server;
         //create name generator
         const list_locations = {};
         Object.entries(Globals.rnd_name_lists).forEach(([key, file_name]) => {
@@ -39,7 +39,7 @@ class GameServer {
     start() {
         this._initializeSocketIo();
 
-        console.log(`Game server running on port ${this._port}!`);
+        console.log(`Game server running!`);
     }
 
     /*---------------------------------------------------------------------*/
@@ -50,7 +50,7 @@ class GameServer {
      * @private
      */
     _initializeSocketIo() {
-        this._io = socketIo(this._port);
+        this._io = socketIo(this._server);
 
         //react to different types of events (client connection), ALL clients
         this._io.on('connection', socket => {
