@@ -1,0 +1,107 @@
+:root {
+  --fa-spacing: 5px;
+}
+
+/* generic rules */
+
+html,
+body,
+div#page-content {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+div#page-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+div#page-content > :not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.fa-start {
+  cursor: pointer;
+}
+
+.fa-start > i:first-child {
+  margin-right: var(--fa-spacing);
+}
+
+/* game name */
+
+div#game-name {
+  font-size: 25px;
+}
+
+/* join type choices */
+
+div#join-type-choices {
+  display: flex;
+}
+
+div#join-type-choices > div:not(:last-child) {
+  margin-right: 12px;
+}
+
+div#join-type-choices * {
+  font-size: 16px;
+}
+
+/* further join params */
+
+div#join-further-params {
+  border: 1px solid black;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: self-start;
+}
+
+div#join-further-params > *:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+div#param-setters {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-row-gap: 10px;
+  align-items: center;
+  width: 100%;
+}
+
+div.param-setter-param-name {
+  margin-right: 5px;
+}
+
+form.param-setter-form {
+  min-width: 140px;
+}
+
+form.param-setter-form > input {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+div#room-error {
+  font-size: 12px;
+  color: red;
+}
+
+/* room join button */
+
+button#game-join-button {
+  font-size: 16px;
+  height: 40px;
+  width: 140px;
+  background-color: orange;
+  border-radius: 8px;
+}
+button {
+  cursor: pointer;
+}

@@ -1,0 +1,46 @@
+:root {
+  --chat-padding: 5px;
+}
+
+/* the full chat interface */
+div#chat-wrap {
+  padding: var(--chat-padding);
+  border: 1px solid black;
+  /* flow as column */
+  flex-grow: 1; /*fill remaining space on right side */
+  display: flex;
+  flex-direction: column;
+}
+
+/* chat window fills as much space as possible above the input */
+div.chat {
+  flex-grow: 1;
+  /* prevent content from overflowing vertically */
+  overflow-y: scroll;
+  flex-basis: 0;
+}
+
+/* center the input field within the chat */
+div#chat-form-container {
+  text-align: center;
+}
+form.chat-input {
+  display: inline-block;
+}
+
+/* fit the chat input into the chat interface */
+form.chat-input, input#chat-input-text {
+  width: 100%;
+}
+input#chat-input-text {
+  box-sizing: border-box;
+}
+
+/* style of different message types */
+span.chat-error-message {
+  color: red;
+}
+
+span.chat-whisper-message {
+  color: #ff66ff;
+}

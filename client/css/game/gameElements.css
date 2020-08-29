@@ -1,0 +1,149 @@
+:root {
+  --game-general-padding: 10px;
+  --game-lower-area-size: 32px;
+  --game-lower-area-margin: 10px;
+  --game-lower-area-element-spacing: 10px;
+  /* previously typed words */
+  --game-prev-words-height: 35px;
+  --game-prev-words-font-size: 30px;
+  /* lower half game content */
+  --game-name-tag-height: 30px;
+  --game-name-tag-font-size: 25px;
+  --game-typed-word-height: 30px;
+  --game-typed-word-font-size: 25px;
+  --game-error-font-size: 10px;
+  --game-error-color: #ff3333;
+  --game-error-top: 28px;
+  /* turn indication */
+  --game-turn-indication-font-size: 35px;
+  --game-turn-indication-font-color: red;
+  /* idle message */
+  --game-idle-message_margin: 20px;
+}
+
+/* center different content elements inside the game area */
+div#game {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* the wrapper for all game elements */
+div#game-elements {
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* game wrapper */
+
+div#game-content {
+  width: 100%;
+  height: 100%;
+  padding: var(--game-general-padding);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative; /* anchor current turn text */
+  user-select: none;
+}
+
+/* upper part of game elements (previous words + hint) */
+
+div#game-upper {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+div#game-upper > div.previously-typed-word, div#game-upper > div.next-word-hint {
+  height: var(--game-prev-words-height);
+  font-size: var(--game-prev-words-font-size);
+}
+
+/* lower part of game elements */
+
+div#game-lower {
+  height: var(--game-lower-area-size);
+  margin-bottom: var(--game-lower-area-margin);
+  display: flex;
+  justify-content: center;
+}
+
+div#game-cur-player-tag {
+  height: var(--game-name-tag-height);
+  font-size: var(--game-name-tag-font-size);
+}
+
+img#game-arrow-img {
+  height: var(--game-name-tag-height);
+}
+
+div#game-cur-player-tag, img#game-arrow-img {
+  margin-right: var(--game-lower-area-element-spacing);
+}
+
+div#input-showing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative; /* anchor typing error */
+}
+
+div#game-typed-word {
+  height: var(--game-typed-word-height);
+  font-size: var(--game-typed-word-font-size);
+}
+
+div#typing-error {
+  font-size: var(--game-error-font-size);
+  color: var(--game-error-color);
+  position: absolute;
+  top: var(--game-error-top);
+  white-space: nowrap;
+}
+
+/* form to put in guessed words to participate in game */
+
+form#game-input-form {
+  width: 45%;
+}
+
+form#game-input-form input {
+  width: 100%;
+  text-align: center;
+}
+
+/* elements to signal to a player that it is currently his turn */
+div#game-content.current-player { /* state controlled by class */
+  box-shadow: inset 0 0 5px 5px red;
+}
+
+div.your-turn-label {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  font-size: var(--game-turn-indication-font-size);
+  color: var(--game-turn-indication-font-color);
+  letter-spacing: 1.2em;
+  margin-bottom: -1.2em;
+}
+
+div#your-turn-label-left {
+  right: 85%;
+}
+
+div#your-turn-label-right {
+  left: 85%;
+}
+
+/* waiting/victory message when game is not currently active */
+
+div#game-idle-message {
+  margin: var(--game-idle-message_margin);
+}

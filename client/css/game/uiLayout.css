@@ -1,0 +1,33 @@
+:root {
+  /* full page limits */
+  --page-min-width: 870px;
+  /* space planning */
+  --player-width: 290px;
+  /* border between major ui elements */
+  --player-major-element-border: 1px solid black;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+/* full page flows as column */
+div#page-wrap {
+  display: none; /* hidden until connect, then must be set to flex */
+  flex-direction: column;
+  height: 100%;
+  min-width: var(--page-min-width);
+}
+
+/* column to contain left and right column content */
+div#game-wrap {
+  display: grid;
+  grid-template-rows: 1fr 1fr; /* fallback, actually controlled via js through server emit */
+  grid-template-columns: var(--player-width) 1fr;
+  flex-grow: 1; /* game content fills remaining bottom space below banner */
+}
+

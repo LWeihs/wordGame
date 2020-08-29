@@ -1,0 +1,676 @@
+/* center room text in the room banner */
+
+div.banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* spacing between text blocks (pretty surrounding and main text) */
+
+div.banner > div.main {
+  font-size: 30px;
+  line-height: 50px;
+}
+:root {
+  --chat-padding: 5px;
+}
+
+/* the full chat interface */
+
+div#chat-wrap {
+  padding: var(--chat-padding);
+  border: 1px solid black;
+  /* flow as column */
+  flex-grow: 1;
+  /*fill remaining space on right side */
+  display: flex;
+  flex-direction: column;
+}
+
+/* chat window fills as much space as possible above the input */
+
+div.chat {
+  flex-grow: 1;
+  /* prevent content from overflowing vertically */
+  overflow-y: scroll;
+  flex-basis: 0;
+}
+
+/* center the input field within the chat */
+
+div#chat-form-container {
+  text-align: center;
+}
+
+form.chat-input {
+  display: inline-block;
+}
+
+/* fit the chat input into the chat interface */
+
+form.chat-input,
+input#chat-input-text {
+  width: 100%;
+}
+
+input#chat-input-text {
+  box-sizing: border-box;
+}
+
+/* style of different message types */
+
+span.chat-error-message {
+  color: red;
+}
+
+span.chat-whisper-message {
+  color: #ff66ff;
+}
+div#connect-message-wrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div#connect-message {
+  max-width: 300px;
+  border: 1px solid black;
+  padding: 12px;
+}
+:root {
+  --game-general-padding: 10px;
+  --game-lower-area-size: 32px;
+  --game-lower-area-margin: 10px;
+  --game-lower-area-element-spacing: 10px;
+  /* previously typed words */
+  --game-prev-words-height: 35px;
+  --game-prev-words-font-size: 30px;
+  /* lower half game content */
+  --game-name-tag-height: 30px;
+  --game-name-tag-font-size: 25px;
+  --game-typed-word-height: 30px;
+  --game-typed-word-font-size: 25px;
+  --game-error-font-size: 10px;
+  --game-error-color: #ff3333;
+  --game-error-top: 28px;
+  /* turn indication */
+  --game-turn-indication-font-size: 35px;
+  --game-turn-indication-font-color: red;
+  /* idle message */
+  --game-idle-message_margin: 20px;
+}
+
+/* center different content elements inside the game area */
+
+div#game {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* the wrapper for all game elements */
+
+div#game-elements {
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* game wrapper */
+
+div#game-content {
+  width: 100%;
+  height: 100%;
+  padding: var(--game-general-padding);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  /* anchor current turn text */
+  user-select: none;
+}
+
+/* upper part of game elements (previous words + hint) */
+
+div#game-upper {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+div#game-upper > div.previously-typed-word,
+div#game-upper > div.next-word-hint {
+  height: var(--game-prev-words-height);
+  font-size: var(--game-prev-words-font-size);
+}
+
+/* lower part of game elements */
+
+div#game-lower {
+  height: var(--game-lower-area-size);
+  margin-bottom: var(--game-lower-area-margin);
+  display: flex;
+  justify-content: center;
+}
+
+div#game-cur-player-tag {
+  height: var(--game-name-tag-height);
+  font-size: var(--game-name-tag-font-size);
+}
+
+img#game-arrow-img {
+  height: var(--game-name-tag-height);
+}
+
+div#game-cur-player-tag,
+img#game-arrow-img {
+  margin-right: var(--game-lower-area-element-spacing);
+}
+
+div#input-showing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  /* anchor typing error */
+}
+
+div#game-typed-word {
+  height: var(--game-typed-word-height);
+  font-size: var(--game-typed-word-font-size);
+}
+
+div#typing-error {
+  font-size: var(--game-error-font-size);
+  color: var(--game-error-color);
+  position: absolute;
+  top: var(--game-error-top);
+  white-space: nowrap;
+}
+
+/* form to put in guessed words to participate in game */
+
+form#game-input-form {
+  width: 45%;
+}
+
+form#game-input-form input {
+  width: 100%;
+  text-align: center;
+}
+
+/* elements to signal to a player that it is currently his turn */
+
+div#game-content.current-player {
+  /* state controlled by class */
+  box-shadow: inset 0 0 5px 5px red;
+}
+
+div.your-turn-label {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  font-size: var(--game-turn-indication-font-size);
+  color: var(--game-turn-indication-font-color);
+  letter-spacing: 1.2em;
+  margin-bottom: -1.2em;
+}
+
+div#your-turn-label-left {
+  right: 85%;
+}
+
+div#your-turn-label-right {
+  left: 85%;
+}
+
+/* waiting/victory message when game is not currently active */
+
+div#game-idle-message {
+  margin: var(--game-idle-message_margin);
+}
+:root {
+  /* minimum sizes of option elements */
+  --opts-panel-width: 210px;
+  --opts-button-min-width: 120px;
+  --opts-button-min-height: 50px;
+  /* dropright content */
+  --opts-dropright-border: 1px solid black;
+  /* spacing */
+  --opts-box-padding: 10px;
+  --opts-margin-names-to-settings: 8px;
+  --opts-margin-tag-to-interaction: 10px;
+  --opts-spacing-between-elements: 10px;
+  --opts-margin-interaction-to-button: 10px;
+  /* fonts */
+  --opts-tag-font-size: 25px;
+  --opts-text-font-size: 20px;
+  --opts-text-line-height: 30px;
+  --opts-button-font-size: 20px;
+}
+
+/* wrapper */
+
+div#game-opts {
+  border: 1px solid blue;
+  padding: var(--opts-box-padding);
+  /* flow as column */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* font and margin of tag line */
+
+div#game-opts-tag {
+  font-size: var(--opts-tag-font-size);
+  text-decoration: underline;
+  margin-bottom: var(--opts-margin-tag-to-interaction);
+}
+
+/* interaction wrapper (names + settings) */
+
+div#game-opts-interaction {
+  display: grid;
+  /* content flows as row */
+  grid-template-columns: [name-start] auto [setting-start] 1fr [end];
+  grid-auto-flow: column;
+  row-gap: var(--opts-spacing-between-elements);
+  column-gap: var(--opts-margin-names-to-settings);
+  margin-bottom: var(--opts-margin-interaction-to-button);
+}
+
+/* placement within grid */
+
+div.grid-container {
+  display: contents;
+}
+
+.game-opts-setting {
+  grid-column-start: setting-start;
+}
+
+div.game-opts-name {
+  grid-column-start: name-start;
+  align-self: center;
+}
+
+/* individual setting elements for regular users*/
+
+div.game-opts-setting {
+  display: flex;
+  justify-content: center;
+  /* horizontal alignment */
+}
+
+/* setting elements for room lead */
+
+div#game-opts-settings-changeable div.dropright-choice {
+  border: 1px solid black;
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+div#game-opts-settings-changeable div.dropright-content {
+  background-color: #f1f1f1;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+div#game-opts-settings-changeable div.dropright-content > div {
+  width: 100%;
+  height: var(--opts-text-line-height);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* border on dropright children */
+
+div#game-opts-settings-changeable div.dropright-content > div:first-child {
+  border-top: var(--opts-dropright-border);
+}
+
+div#game-opts-settings-changeable div.dropright-content > div {
+  border-left: var(--opts-dropright-border);
+  border-right: var(--opts-dropright-border);
+  border-bottom: var(--opts-dropright-border);
+}
+
+div#game-opts-settings-changeable div.dropright-content > div:hover {
+  background-color: #737373;
+}
+
+div#game-opts-settings-changeable div.dropright-content > div:not(:last-child) {
+  border-bottom: 1px solid black;
+}
+
+form#turn-timer-form input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid black;
+  text-align: center;
+  font-size: var(--opts-text-font-size);
+  font-family: serif;
+  color: black;
+}
+
+/* font, height and positioning of text elements */
+
+div.game-opts-name,
+div.game-opts-setting {
+  font-size: var(--opts-text-font-size);
+  height: var(--opts-text-line-height);
+  display: flex;
+  align-items: center;
+}
+
+div.game-opts-setting > div.dropright-choice,
+form.game-opts-setting {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* center start button horizontally in its wrapper */
+
+div#game-start-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+/* buttons to make ready/start game */
+
+button#game-ready-button,
+button#game-start-button {
+  font-size: var(--opts-button-font-size);
+  min-width: var(--opts-button-min-width);
+  min-height: var(--opts-button-min-height);
+}
+button {
+  cursor: pointer;
+}
+:root {
+  /* color of elements in varying states */
+  --player-color-odd: white;
+  --player-color-even: #f2f2f2;
+  --player-color-defeated: #808080;
+  /* font information */
+  --player-font-family: serif;
+  --player-font-size: 14px;
+  /* regular border style of player (div) list elements */
+  --player-border-width: 1px;
+  --player-border-color: black;
+  /* border style of selected player (div) list elements */
+  --player-border-width-selected: 3px;
+  --player-border-color-selected: red;
+}
+
+/* flow as column */
+
+div#players {
+  display: flex;
+  flex-direction: column;
+}
+
+/* dynamically created (div) list elements */
+
+div#players > div.player-item {
+  box-sizing: border-box;
+  background-color: var(--player-color-odd);
+  /* content flows as row (also centers text for free elements) */
+  display: flex;
+  /* general border rule: fill left, right, and top */
+  border-style: solid;
+  border-color: var(--player-border-color);
+  border-width: var(--player-border-width) var(--player-border-width) 0 var(--player-border-width);
+  /* font styles */
+  font-family: var(--player-font-family);
+  font-size: var(--player-font-size);
+}
+
+/* every second list element has different background */
+
+div#players > div:nth-child(2n) {
+  background-color: var(--player-color-even);
+}
+
+/* finish border on last list element */
+
+div#players div:last-child {
+  border-bottom-width: var(--player-border-width);
+}
+
+/* current player is identified by class */
+
+div#players > div.player-item.current-player {
+  border: var(--player-border-width-selected) solid var(--player-border-color-selected);
+}
+
+/* remove top border from div after the one representing the current player */
+
+div#players > div.player-item.current-player + div {
+  border-top-width: 0;
+}
+
+/* defeated players are identified by class */
+
+div#players > div.player-item.defeated {
+  background-color: var(--player-color-defeated);
+}
+
+/* styles for unfilled player items */
+
+div#players > div.unfilled-player-item {
+  justify-content: center;
+  align-items: center;
+}
+
+/* styles for (different parts of) filled player items */
+
+div#players > div.filled-player-item {
+  display: flex;
+}
+
+/* name tag, team tag below it (as column) and crown above it (room lead, absolute position)*/
+
+div#players > div.filled-player-item > div.name-tag-wrap {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+div#players > div.filled-player-item > div.name-tag-wrap > div.player-name-tag {
+  position: relative;
+  /* contains both text(s) and crown. anchor crown by column flex-direction and center text */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+div#players > div.filled-player-item > div.name-tag-wrap > div.player-name-tag img {
+  position: absolute;
+  /* in reference to name tag */
+  bottom: 65%;
+  /* not 100% to let crown be "on top" of text */
+}
+
+div#players > div.filled-player-item > div.name-tag-wrap > div.player-team-tag {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div#players > div.filled-player-item > div.name-tag-wrap > div.player-team-tag > form input {
+  height: 100%;
+  margin-left: 0.5em;
+  text-align: center;
+  box-sizing: border-box;
+  border: 1px solid black;
+}
+
+/* status wrap: show picture of ready/not ready status */
+
+div#players > div.filled-player-item > div.player-status-wrap {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* win tracker wrap: show picture of trophy and number wins next to it */
+
+div#players > div.filled-player-item > div.win-tacker-wrap {
+  display: flex;
+  align-items: center;
+}
+/* TEXT STYLES */
+
+.vertical-text {
+  writing-mode: vertical-lr;
+  text-orientation: upright;
+}
+
+/* BUTTON STYLES */
+
+button.positive-action {
+  background-color: #66ff33;
+}
+
+button.negative-action {
+  background-color: #ff3333;
+}
+
+button.inactive-action {
+  background-color: #737373;
+  cursor: inherit;
+}
+
+.rounded {
+  border-radius: 8px;
+}
+
+/* PICKING MENU THAT EXPANDS TO THE RIGHT */
+
+.dropright {
+  position: relative;
+}
+
+.dropright-content {
+  display: none;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  /* align top with anchor */
+  left: 103%;
+  /* start a bit after end of main element, leaves small gap */
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.dropright-bridge {
+  /* bridge so content does not disappear on slow hover over gap */
+  display: none;
+  position: absolute;
+  height: 100%;
+  width: 30%;
+  /* must span the distance between main div and the dropright-content */
+  left: 90%;
+  /* must start before the gap */
+  box-sizing: border-box;
+}
+
+/* show the dropright-content when the dropright is hovered */
+
+.dropright:hover .dropright-content {
+  display: flex;
+}
+
+.dropright:hover .dropright-bridge {
+  display: block;
+}
+:root {
+  /* element surrounding the text */
+  --timer-radius: 60px;
+  --timer-border-width: 2px;
+  /* displayed text */
+  --timer-font-family: PizzaBot, serif;
+  --timer-font-size: 35px;
+}
+
+/* center ticker in container */
+
+div.time-ticker-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+/* shape and text of the ticker */
+
+div.time-ticker {
+  width: var(--timer-radius);
+  height: var(--timer-radius);
+  border-radius: 50px;
+  border: var(--timer-border-width) solid black;
+  /* vertically center text inside the list elements */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* font styling */
+  font-family: var(--timer-font-family);
+  font-size: var(--timer-font-size);
+}
+:root {
+  /* full page limits */
+  --page-min-width: 870px;
+  /* space planning */
+  --player-width: 290px;
+  /* border between major ui elements */
+  --player-major-element-border: 1px solid black;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+/* full page flows as column */
+
+div#page-wrap {
+  display: none;
+  /* hidden until connect, then must be set to flex */
+  flex-direction: column;
+  height: 100%;
+  min-width: var(--page-min-width);
+}
+
+/* column to contain left and right column content */
+
+div#game-wrap {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  /* fallback, actually controlled via js through server emit */
+  grid-template-columns: var(--player-width) 1fr;
+  flex-grow: 1;
+  /* game content fills remaining bottom space below banner */
+}

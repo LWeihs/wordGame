@@ -1,0 +1,31 @@
+{
+  "name": "interactionserver",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \\\"nodemon server/gameServerRunner.js\" \\\"nodemon server/staticServer.js\\\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "body-parser": "latest",
+    "bootstrap": "^4.0.0-alpha.3",
+    "check-word": "^1.1.0",
+    "concurrently": "^5.3.0",
+    "express": "^4.17.1",
+    "gulp": "^4.0.2",
+    "gulp-uglify-es": "^2.0.0",
+    "node-static": "^0.7.11",
+    "nodemon": "^2.0.4",
+    "random-part-of-speech": "^1.0.0",
+    "random-words": "^1.1.1",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "gulp-concat-css": "^3.1.0",
+    "gulp-rename": "^2.0.0",
+    "rollup": "^2.23.1"
+  }
+}

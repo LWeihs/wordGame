@@ -1,0 +1,61 @@
+/* TEXT STYLES */
+
+.vertical-text {
+  writing-mode: vertical-lr;
+  text-orientation: upright;
+}
+
+/* BUTTON STYLES */
+
+button.positive-action {
+  background-color: #66ff33;
+}
+
+button.negative-action {
+  background-color: #ff3333;
+}
+
+button.inactive-action {
+  background-color: #737373;
+  cursor: inherit;
+}
+
+.rounded {
+  border-radius: 8px;
+}
+
+/* PICKING MENU THAT EXPANDS TO THE RIGHT */
+
+.dropright {
+  position: relative;
+}
+
+.dropright-content {
+  display: none;
+  position: absolute;
+  z-index: 1;
+  top: 0; /* align top with anchor */
+  left: 103%; /* start a bit after end of main element, leaves small gap */
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.dropright-bridge { /* bridge so content does not disappear on slow hover over gap */
+  display: none;
+  position: absolute;
+  height: 100%;
+  width: 30%; /* must span the distance between main div and the dropright-content */
+  left: 90%; /* must start before the gap */
+  box-sizing: border-box;
+}
+
+/* show the dropright-content when the dropright is hovered */
+.dropright:hover .dropright-content {
+  display: flex;
+}
+
+.dropright:hover .dropright-bridge {
+  display: block;
+}

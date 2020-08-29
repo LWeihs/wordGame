@@ -1,0 +1,146 @@
+:root {
+  /* minimum sizes of option elements */
+  --opts-panel-width: 210px;
+  --opts-button-min-width: 120px;
+  --opts-button-min-height: 50px;
+  /* dropright content */
+  --opts-dropright-border: 1px solid black;
+  /* spacing */
+  --opts-box-padding: 10px;
+  --opts-margin-names-to-settings: 8px;
+  --opts-margin-tag-to-interaction: 10px;
+  --opts-spacing-between-elements: 10px;
+  --opts-margin-interaction-to-button: 10px;
+  /* fonts */
+  --opts-tag-font-size: 25px;
+  --opts-text-font-size: 20px;
+  --opts-text-line-height: 30px;
+  --opts-button-font-size: 20px;
+}
+
+/* wrapper */
+div#game-opts {
+  border: 1px solid blue;
+  padding: var(--opts-box-padding);
+  /* flow as column */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* font and margin of tag line */
+div#game-opts-tag {
+  font-size: var(--opts-tag-font-size);
+  text-decoration: underline;
+  margin-bottom: var(--opts-margin-tag-to-interaction);
+}
+
+/* interaction wrapper (names + settings) */
+div#game-opts-interaction {
+  display: grid; /* content flows as row */
+  grid-template-columns: [name-start] auto [setting-start] 1fr [end];
+  grid-auto-flow: column;
+  row-gap: var(--opts-spacing-between-elements);
+  column-gap: var(--opts-margin-names-to-settings);
+  margin-bottom: var(--opts-margin-interaction-to-button);
+}
+
+/* placement within grid */
+div.grid-container {
+  display: contents;
+}
+
+.game-opts-setting {
+  grid-column-start: setting-start;
+}
+
+div.game-opts-name {
+  grid-column-start: name-start;
+  align-self: center;
+}
+
+/* individual setting elements for regular users*/
+div.game-opts-setting {
+  display: flex;
+  justify-content: center; /* horizontal alignment */
+}
+
+/* setting elements for room lead */
+div#game-opts-settings-changeable div.dropright-choice {
+  border: 1px solid black;
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+div#game-opts-settings-changeable div.dropright-content {
+  background-color: #f1f1f1;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+div#game-opts-settings-changeable div.dropright-content > div {
+  width: 100%;
+  height: var(--opts-text-line-height);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* border on dropright children */
+div#game-opts-settings-changeable div.dropright-content > div:first-child {
+  border-top: var(--opts-dropright-border);
+}
+div#game-opts-settings-changeable div.dropright-content > div {
+  border-left: var(--opts-dropright-border);
+  border-right: var(--opts-dropright-border);
+  border-bottom: var(--opts-dropright-border);
+}
+
+
+div#game-opts-settings-changeable div.dropright-content > div:hover {
+  background-color: #737373;
+}
+
+div#game-opts-settings-changeable div.dropright-content > div:not(:last-child) {
+  border-bottom: 1px solid black;
+}
+
+form#turn-timer-form input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid black;
+  text-align: center;
+  font-size: var(--opts-text-font-size);
+  font-family: serif;
+  color: black;
+}
+
+/* font, height and positioning of text elements */
+div.game-opts-name, div.game-opts-setting {
+  font-size: var(--opts-text-font-size);
+  height: var(--opts-text-line-height);
+  display: flex;
+  align-items: center;
+}
+
+div.game-opts-setting > div.dropright-choice, form.game-opts-setting {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* center start button horizontally in its wrapper */
+div#game-start-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+/* buttons to make ready/start game */
+button#game-ready-button, button#game-start-button {
+  font-size: var(--opts-button-font-size);
+  min-width: var(--opts-button-min-width);
+  min-height: var(--opts-button-min-height);
+}

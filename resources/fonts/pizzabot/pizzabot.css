@@ -1,0 +1,17 @@
+@font-face {
+  font-family: 'PizzaBot';
+  src: url('PizzaBot.svg#PizzaBot') format('svg'),
+       url('PizzaBot.ttf') format('truetype'),
+       url('PizzaBot.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'pizzabot';
+  src: url('pizzabot.eot');
+  src: url('pizzabot.eot?#iefix') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+

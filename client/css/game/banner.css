@@ -1,0 +1,12 @@
+/* center room text in the room banner */
+div.banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* spacing between text blocks (pretty surrounding and main text) */
+div.banner > div.main {
+  font-size: 30px;
+  line-height: 50px;
+}

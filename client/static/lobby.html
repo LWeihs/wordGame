@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Chat</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="lobby.css" rel="stylesheet">
+
+    <!-- font awesome icons -->
+    <script src="https://kit.fontawesome.com/0b2bdda3c3.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+<!-- PAGE STRUCTURE -->
+<div id="page-content">
+    <div id="game-name">Word Game</div>
+    <div id="join-type-choices">
+        <div id="join-type-random" class="join-type-choice fa-start"><i class="far fa-circle"></i>Join Random</div>
+        <div id="join-type-specific" class="join-type-choice fa-start"><i class="far fa-circle"></i>Join Specific</div>
+        <div id="join-type-new" class="join-type-choice fa-start"><i class="far fa-circle"></i>Create New</div>
+    </div>
+    <div id="join-further-params">
+        <div id="param-setters">
+            <div id="name-tag" class="param-setter-param-name">Your Name:</div>
+            <form id="name-input-form" class="param-setter-form" autocomplete="off">
+                <label for="name-input-text"></label>
+                <input type="text" id="name-input-text">
+            </form>
+            <div id="room-tag" class="param-setter-param-name">Room Name:</div>
+            <form id="room-input-form" class="param-setter-form" autocomplete="off">
+                <label for="room-input-text"></label>
+                <input type="text" id="room-input-text">
+            </form>
+        </div>
+        <div id="room-error"></div>
+        <div id="join-private-toggle" class="fa-start"><i class="far fa-square"></i>Private</div>
+    </div>
+    <button id="game-join-button">Join Game!</button>
+</div>
+
+<!-- SCRIPTS -->
+<!-- socket.io -->
+<script src="socket.io.js"></script>
+<!-- distributed client script -->
+<script src="lobby.min.js"></script>
+</body>
+
+</html>

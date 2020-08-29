@@ -1,0 +1,116 @@
+:root {
+  /* color of elements in varying states */
+  --player-color-odd: white;
+  --player-color-even: #f2f2f2;
+  --player-color-defeated: #808080;
+  /* font information */
+  --player-font-family: serif;
+  --player-font-size: 14px;
+  /* regular border style of player (div) list elements */
+  --player-border-width: 1px;
+  --player-border-color: black;
+  /* border style of selected player (div) list elements */
+  --player-border-width-selected: 3px;
+  --player-border-color-selected: red;
+}
+
+/* flow as column */
+div#players {
+  display: flex;
+  flex-direction: column;
+}
+
+/* dynamically created (div) list elements */
+div#players > div.player-item {
+  box-sizing: border-box;
+  background-color: var(--player-color-odd);
+  /* content flows as row (also centers text for free elements) */
+  display: flex;
+  /* general border rule: fill left, right, and top */
+  border-style: solid;
+  border-color: var(--player-border-color);
+  border-width: var(--player-border-width) var(--player-border-width) 0 var(--player-border-width);
+  /* font styles */
+  font-family: var(--player-font-family);
+  font-size: var(--player-font-size);
+}
+
+/* every second list element has different background */
+div#players > div:nth-child(2n) {
+  background-color: var(--player-color-even);
+}
+
+/* finish border on last list element */
+div#players div:last-child {
+  border-bottom-width: var(--player-border-width);
+}
+
+/* current player is identified by class */
+div#players > div.player-item.current-player {
+  border: var(--player-border-width-selected) solid var(--player-border-color-selected);
+}
+
+/* remove top border from div after the one representing the current player */
+div#players > div.player-item.current-player + div {
+  border-top-width: 0;
+}
+
+/* defeated players are identified by class */
+div#players > div.player-item.defeated {
+  background-color: var(--player-color-defeated);
+}
+
+/* styles for unfilled player items */
+div#players > div.unfilled-player-item {
+  justify-content: center;
+  align-items: center;
+}
+
+/* styles for (different parts of) filled player items */
+div#players > div.filled-player-item {
+  display: flex;
+}
+/* name tag, team tag below it (as column) and crown above it (room lead, absolute position)*/
+div#players > div.filled-player-item > div.name-tag-wrap {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+div#players > div.filled-player-item > div.name-tag-wrap > div.player-name-tag {
+  position: relative;
+  /* contains both text(s) and crown. anchor crown by column flex-direction and center text */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+div#players > div.filled-player-item > div.name-tag-wrap > div.player-name-tag img {
+  position: absolute; /* in reference to name tag */
+  bottom: 65%; /* not 100% to let crown be "on top" of text */
+}
+div#players > div.filled-player-item > div.name-tag-wrap > div.player-team-tag {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+div#players > div.filled-player-item > div.name-tag-wrap > div.player-team-tag > form input {
+  height: 100%;
+  margin-left: 0.5em;
+  text-align: center;
+  box-sizing: border-box;
+  border: 1px solid black;
+}
+/* status wrap: show picture of ready/not ready status */
+div#players > div.filled-player-item > div.player-status-wrap {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* win tracker wrap: show picture of trophy and number wins next to it */
+div#players > div.filled-player-item > div.win-tacker-wrap {
+  display: flex;
+  align-items: center;
+}

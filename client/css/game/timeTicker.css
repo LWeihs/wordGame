@@ -1,0 +1,29 @@
+:root {
+  /* element surrounding the text */
+  --timer-radius: 60px;
+  --timer-border-width: 2px;
+  /* displayed text */
+  --timer-font-family: PizzaBot, serif;
+  --timer-font-size: 35px;
+}
+
+/* center ticker in container */
+div.time-ticker-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+/* shape and text of the ticker */
+div.time-ticker {
+  width: var(--timer-radius);
+  height: var(--timer-radius);
+  border-radius: 50px;
+  border: var(--timer-border-width) solid black;
+  /* vertically center text inside the list elements */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* font styling */
+  font-family: var(--timer-font-family);
+  font-size: var(--timer-font-size);
+}
