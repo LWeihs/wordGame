@@ -1,7 +1,7 @@
 const Globals = require('./globals');
 
 function runStaticServer() {
-    const port = Globals.ports.static_server;
+    const port = process.env.PORT || Globals.ports.static_server;
 
     //get dependencies
     const express = require('express');
