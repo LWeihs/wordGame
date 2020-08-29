@@ -6,6 +6,12 @@
   "author": "Lennart Weihs",
   "license": "ISC",
   "description": "",
+  "scripts": {
+    "start": "node server/server.js"
+  },
+  "engines": {
+    "node": "12.18.3"
+  },
   "dependencies": {
     "body-parser": "latest",
     "check-word": "^1.1.0",
