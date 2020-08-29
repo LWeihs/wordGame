@@ -149,13 +149,16 @@ function setPageToGameState() {
  * @param name - name to show for player. May be empty, is then randomized
  */
 function initializeSocketIo(target_room, name) {
-    const host_name = window.location.hostname;
     let query = `source=game_room&room=${target_room}`;
     if (name) {
         query += `&name=${name}`;
     }
     user_info.target_room = target_room; //log target room
-    const socket = io(`${host_name}:8081`, { query: query});
+    const socket = io({
+        transports: ['websocket'],
+        upgrade: false,
+        query: query
+    });
 
     /* HANDLE EMITTED EVENTS FROM SERVER */
 

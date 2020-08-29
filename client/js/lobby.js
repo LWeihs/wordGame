@@ -20,11 +20,16 @@ function initializeControls() {
 /*---------------------------------------------------------------------*/
 
 function initializeSocketIo() {
-    const host_name = window.location.hostname;
-    const socket = io(`${host_name}:8081`, { query: `source=lobby`});
+    const socket = io({
+        transports: ['websocket'],
+        upgrade: false,
+        query: `source=lobby`
+    });
 
+    //initialize event emitting
     game_join_controls.initSocket(socket);
 
+    //initialize event handling
     socket.on('redirect-error', error_msg => {
         game_join_controls.displayErrorMessage(error_msg);
     });

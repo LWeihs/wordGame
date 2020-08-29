@@ -23,12 +23,10 @@ function runStaticServer() {
         res.sendFile(path.resolve(__dirname + '/../client/static/game.html'));
     });
 
-    //listen on port
-    app.listen(port, () => {
+    //listen on port, return the created server instance
+    return app.listen(port, () => {
         console.log(`Static server serves on port ${port}`);
     });
-
-    return app;
 }
 
 module.exports = runStaticServer;
