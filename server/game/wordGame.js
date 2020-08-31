@@ -133,7 +133,7 @@ class WordGame extends TimedGame {
         this._used_words.add(valid_word);
         this._setExpectedWordStart(valid_word);
         this._sendValidWordToPlayers(valid_word);
-        this._handlePlayerSuccess();
+        this.handlePlayerSuccess();
     }
 
     /*---------------------------------------------------------------------*/

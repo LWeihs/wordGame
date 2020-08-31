@@ -93,6 +93,15 @@ class RoomInfo {
 
     /*---------------------------------------------------------------------*/
 
+    hasActivePlayer() {
+        for (const socket of this._players) {
+            if (socket && socket.game_state.is_current_player) return true;
+        }
+        return false;
+    }
+
+    /*---------------------------------------------------------------------*/
+
     isTeamAlive(team_id) {
         for (const socket of this._players) {
             if (socket && socket.game_state.team === team_id) {

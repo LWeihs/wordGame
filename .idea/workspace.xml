@@ -3,11 +3,22 @@
   <component name="ChangeListManager">
     <list default="true" id="4999b106-32f7-4096-80fe-8baa59c19f8c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/css/dist/game.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/css/dist/game.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/css/dist/lobby.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/css/dist/lobby.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/css/game/playerList.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/css/game/playerList.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/css/game/uiLayout.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/css/game/uiLayout.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/css/lobby/lobby.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/css/lobby/lobby.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/js/dist/game.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/js/dist/game.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/js/dist/game.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/js/dist/game.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/js/dist/lobby.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/js/dist/lobby.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/js/dist/lobby.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/js/dist/lobby.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/js/game.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/js/game.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/js/lobby.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/js/lobby.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/staticServer.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/staticServer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/js/game/playerListControls.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/js/game/playerListControls.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/js/globals.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/js/globals.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/static/game.html" beforeDir="false" afterPath="$PROJECT_DIR$/client/static/game.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/game/timedGame.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/game/timedGame.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/game/wordGame.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/game/wordGame.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/gameServer.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/gameServer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/roomInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/roomInfo.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -115,7 +126,9 @@
       <workItem from="1598608682226" duration="1673000" />
       <workItem from="1598623647946" duration="10196000" />
       <workItem from="1598644584950" duration="15709000" />
-      <workItem from="1598695555036" duration="4770000" />
+      <workItem from="1598695555036" duration="5534000" />
+      <workItem from="1598733064478" duration="6386000" />
+      <workItem from="1598822331531" duration="11138000" />
     </task>
     <servers />
   </component>

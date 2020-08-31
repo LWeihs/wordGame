@@ -13,6 +13,12 @@ const Globals = {
         trophy: 'trophy.png',
         crown: 'crown.png',
     },
+    image_sizes: {
+        crown: {
+            width: 40,
+            height: 20,
+        },
+    },
     highlight_colors: {
         0: '#ff0000',
         1: '#ff7f00',

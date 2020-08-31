@@ -274,11 +274,14 @@ class GameServer {
                 this._handleRoomDestruction(socket.room);
             } else { //some players still remain in room
                 //send leave notification
-                this._emitLeaveMessageToChattersInRoom(socket.name, socket.room);
+                this._emitLeaveMessageToChattersInRoom(socket.shown_name, socket.room);
                 //elect new leader if necessary
                 if (socket.is_room_lead) {
                     this._electNewRoomLeadForRoom(socket.room);
                 }
+                //let associated game handle potentially necessary turn skipping
+                const room_game = this._getRoomGame(socket.room);
+                room_game.handleDisconnect();
                 //update player info for client
                 this._updateRoom(socket.room);
             }
@@ -427,11 +430,11 @@ class GameServer {
         socket.join(roomName, () => {
             //note the joined room
             socket.room = roomName;
-            //notify other players in the room
-            this._emitJoinMessageToChattersInRoom(socket.name, socket.room);
             //update options and chatter list (order important!)
             this._emitOptionsToRoom(roomName, true);
             this._updateRoom(socket.room);
+            //notify other players in the room (call after room info updates shown name)
+            this._emitJoinMessageToChattersInRoom(socket.shown_name, socket.room);
         });
     }
 

@@ -136,7 +136,7 @@ function setPageToGameState() {
     game_controls.clearIdleMessage();
     game_controls.showGameContent();
     game_start_controls.disableReadyButton();
-    player_list_controls.protect_input = false;
+    player_list_controls.prepareForGameStart();
 }
 
 /*---------------------------------------------------------------------*/
@@ -194,7 +194,7 @@ function initializeRoomInteractionEvents(socket) {
         //set the room name on banner
         banner_controls.setRoomName(user_info.target_room);
         //dynamical creation of elements
-        player_list_controls.scaleToPlayerNumber(max_players);
+        player_list_controls.createPlayerElements(max_players);
         game_controls.createPrevTypedDivs(no_remembered_words);
         //finally make game interface visible
         connection_controls.switchVisibilityToPageContent();

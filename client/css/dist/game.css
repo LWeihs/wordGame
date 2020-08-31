@@ -406,6 +406,7 @@ button {
   --player-color-odd: white;
   --player-color-even: #f2f2f2;
   --player-color-defeated: #808080;
+  --player-color-background: #a6a6a6;
   /* font information */
   --player-font-family: serif;
   --player-font-size: 14px;
@@ -415,6 +416,8 @@ button {
   /* border style of selected player (div) list elements */
   --player-border-width-selected: 3px;
   --player-border-color-selected: red;
+  /* move crown image a slight bit into room leader name text div */
+  --player-crown-inset: 4px;
 }
 
 /* flow as column */
@@ -426,7 +429,7 @@ div#players {
 
 /* dynamically created (div) list elements */
 
-div#players > div.player-item {
+div#players > div.player-item-container {
   box-sizing: border-box;
   background-color: var(--player-color-odd);
   /* content flows as row (also centers text for free elements) */
@@ -435,7 +438,7 @@ div#players > div.player-item {
   border-style: solid;
   border-color: var(--player-border-color);
   border-width: var(--player-border-width) var(--player-border-width) 0 var(--player-border-width);
-  /* font styles */
+  /* font styles (to inherit by children) */
   font-family: var(--player-font-family);
   font-size: var(--player-font-size);
 }
@@ -454,13 +457,13 @@ div#players div:last-child {
 
 /* current player is identified by class */
 
-div#players > div.player-item.current-player {
+div.player-item-container.current-player {
   border: var(--player-border-width-selected) solid var(--player-border-color-selected);
 }
 
 /* remove top border from div after the one representing the current player */
 
-div#players > div.player-item.current-player + div {
+div.player-item-container.current-player + div {
   border-top-width: 0;
 }
 
@@ -470,22 +473,30 @@ div#players > div.player-item.defeated {
   background-color: var(--player-color-defeated);
 }
 
+/* multiple possible children for container that all fill it */
+
+div.player-item-container > div {
+  width: 100%;
+  height: 100%;
+}
+
 /* styles for unfilled player items */
 
-div#players > div.unfilled-player-item {
+div.unfilled-player-item {
+  display: flex;
   justify-content: center;
   align-items: center;
 }
 
 /* styles for (different parts of) filled player items */
 
-div#players > div.filled-player-item {
+div.filled-player-item {
   display: flex;
 }
 
 /* name tag, team tag below it (as column) and crown above it (room lead, absolute position)*/
 
-div#players > div.filled-player-item > div.name-tag-wrap {
+div.filled-player-item > div.name-tag-wrap {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -493,29 +504,29 @@ div#players > div.filled-player-item > div.name-tag-wrap {
   align-items: center;
 }
 
-div#players > div.filled-player-item > div.name-tag-wrap > div.player-name-tag {
+div.filled-player-item > div.name-tag-wrap > div.player-name-tag {
   position: relative;
   /* contains both text(s) and crown. anchor crown by column flex-direction and center text */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-align: center;
 }
 
-div#players > div.filled-player-item > div.name-tag-wrap > div.player-name-tag img {
+div.filled-player-item > div.name-tag-wrap > div.player-name-tag img {
   position: absolute;
   /* in reference to name tag */
-  bottom: 65%;
-  /* not 100% to let crown be "on top" of text */
+  bottom: calc(100% - var(--player-crown-inset));
 }
 
-div#players > div.filled-player-item > div.name-tag-wrap > div.player-team-tag {
+div.filled-player-item > div.name-tag-wrap > div.player-team-tag {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-div#players > div.filled-player-item > div.name-tag-wrap > div.player-team-tag > form input {
+div.filled-player-item > div.name-tag-wrap > div.player-team-tag > form input {
   height: 100%;
   margin-left: 0.5em;
   text-align: center;
@@ -525,7 +536,7 @@ div#players > div.filled-player-item > div.name-tag-wrap > div.player-team-tag >
 
 /* status wrap: show picture of ready/not ready status */
 
-div#players > div.filled-player-item > div.player-status-wrap {
+div.filled-player-item > div.player-status-wrap {
   height: 100%;
   display: flex;
   justify-content: center;
@@ -534,7 +545,7 @@ div#players > div.filled-player-item > div.player-status-wrap {
 
 /* win tracker wrap: show picture of trophy and number wins next to it */
 
-div#players > div.filled-player-item > div.win-tacker-wrap {
+div.filled-player-item > div.win-tacker-wrap {
   display: flex;
   align-items: center;
 }
@@ -668,8 +679,7 @@ div#page-wrap {
 
 div#game-wrap {
   display: grid;
-  grid-template-rows: 1fr 1fr;
-  /* fallback, actually controlled via js through server emit */
+  grid-template-rows: 1fr auto;
   grid-template-columns: var(--player-width) 1fr;
   flex-grow: 1;
   /* game content fills remaining bottom space below banner */

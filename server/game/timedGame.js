@@ -273,9 +273,15 @@ class TimedGame {
 
     /**
      * Timed game has no notion of when a player succeeds in the game. This function
-     * consequently is called in extended classes only.
+     * consequently is called in extended classes only and may have to be extended.
      */
-    _handlePlayerSuccess() {
+    handlePlayerSuccess() {
+        this._skipCurrentTurn();
+    }
+
+    /*---------------------------------------------------------------------*/
+
+    _skipCurrentTurn() {
         if (this._defeat_timeout) {
             clearTimeout(this._defeat_timeout);
         }
@@ -326,6 +332,15 @@ class TimedGame {
     _emitWinnerAnnouncement(winner_name) {
         const winner_msg = winner_name + Globals.game_text.win_suffix;
         this._io.in(this._room_info.name).emit('announce-winner', winner_msg);
+    }
+
+    /*---------------------------------------------------------------------*/
+
+    handleDisconnect() {
+        //skip turn if (any) disconnected player was current active player
+        if (!this._room_info.hasActivePlayer()) {
+            this._skipCurrentTurn();
+        }
     }
 }
 

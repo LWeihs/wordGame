@@ -26,7 +26,7 @@ div#page-wrap {
 /* column to contain left and right column content */
 div#game-wrap {
   display: grid;
-  grid-template-rows: 1fr 1fr; /* fallback, actually controlled via js through server emit */
+  grid-template-rows: 1fr auto;
   grid-template-columns: var(--player-width) 1fr;
   flex-grow: 1; /* game content fills remaining bottom space below banner */
 }

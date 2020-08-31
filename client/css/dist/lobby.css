@@ -19,6 +19,8 @@ div#page-content {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  padding: 8px;
+  box-sizing: border-box;
 }
 
 div#page-content > :not(:last-child) {
@@ -51,6 +53,10 @@ div#join-type-choices > div:not(:last-child) {
 
 div#join-type-choices * {
   font-size: 16px;
+}
+
+div.join-type-choice {
+  text-align: center;
 }
 
 /* further join params */

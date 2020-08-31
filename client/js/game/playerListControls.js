@@ -9,11 +9,9 @@ export default class PlayerListControls {
     initControls() {
         this._game_wrap = document.querySelector('#game-wrap');
         this._player_list = document.querySelector('#players');
-        //functions to execute after all page list elements are added to page, reference by key
-        this._finish_callbacks = {};
-        //further control parameters
-        this.protect_input = false;
-        this._remembered_input = '';
+        this._element_update_fns = {}; //filled during element creation
+        //control setting of team input field
+        this._must_set_team_input = {};
     }
 
     /*---------------------------------------------------------------------*/
@@ -24,111 +22,145 @@ export default class PlayerListControls {
 
     /*---------------------------------------------------------------------*/
 
-    scaleToPlayerNumber(max_players) {
-        const wrap_size = max_players * Globals.player_list_div_height;
-        this._game_wrap.style.gridTemplateRows = `${wrap_size}px 1fr`;
-    }
+    createPlayerElements(max_players) {
+        for (let i=0; i<max_players; ++i) {
+            //create an object to hold quick update functions for created elements
+            const element_update_fns = {
+                set_name: () => {},
+                set_wins: () => {},
+                switch_ready_state: () => {},
+                switch_team_visibility: () => {},
+                enable_team_input: () => {},
+                set_team_str: () => {},
+                set_team_input: () => {},
+                set_room_lead: () => {},
+                set_current_player: () => {},
+                set_alive: () => {},
+                switch_to_empty: () => {},
+                switch_to_filled: () => {},
+            };
+            //create player element and insert functions for updating them
+            const player_element = this._createPlayerListItem(element_update_fns);
+            //add created element to DOM, memorize the update functions
+            this._player_list.appendChild(player_element);
+            this._element_update_fns[i] = element_update_fns;
+            this._must_set_team_input[i] = true;
+        }}
 
     /*---------------------------------------------------------------------*/
 
     updatePlayerList(user_info, game_info, player_info_arr) {
-        //delete previous entries of player list
-        this._clearPlayerList();
+        console.log(player_info_arr)
         //create the new entries of player list
-        player_info_arr.forEach(player_info => {
-            const player_div = this._createPlayerListItem(user_info, game_info,
-                player_info);
-            this._player_list.appendChild(player_div);
+        player_info_arr.forEach((player_info, i) => {
+            if (!player_info) {
+                this._updatePlayerListSlotEmpty(i);
+            } else {
+                this._updatePlayerListSlotFilled(i, user_info, game_info, player_info);
+            }
         });
-        //execute any function that needed to wait for page completion
-        Object.values(this._finish_callbacks).forEach(f => f());
     }
 
     /*---------------------------------------------------------------------*/
 
-    _clearPlayerList() {
-        while (this._player_list.firstChild) {
-            this._player_list.removeChild(this._player_list.firstChild);
-        }
+    prepareForGameStart() {
+        Object.keys(this._must_set_team_input).forEach(key => {
+            this._must_set_team_input[key] = true;
+        });
+    }
+
+    /*---------------------------------------------------------------------*/
+    /* CREATION OF THE DIFFERENT (PARTS OF) LIST ELEMENTS */
+    /*---------------------------------------------------------------------*/
+
+    _createPlayerListItem(element_update_fns) {
+        //create container with both empty and filled state
+        const container = this._createContainerItem(element_update_fns);
+        const empty_item = this._createEmptyPlayerItem();
+        container.appendChild(empty_item);
+        const filled_item = this._createFilledPlayerItem(element_update_fns);
+        filled_item.style.display = 'none';
+        container.appendChild(filled_item);
+
+        //extend update functions
+        element_update_fns.switch_to_empty = () => {
+            filled_item.style.display = 'none';
+            empty_item.style.display = '';
+        };
+        element_update_fns.switch_to_filled = () => {
+            empty_item.style.display = 'none';
+            filled_item.style.display = '';
+        };
+
+        return container;
     }
 
     /*---------------------------------------------------------------------*/
 
-    _createPlayerListItem(user_info, game_info, player_info) {
-        //base div is the same for free and filled list divs
-        const player_div = this._createPlayerListItemBase();
-
-        //shortcut if player_info is null
-        if (!player_info) {
-            this._styleEmptyItem(player_div);
-            return player_div;
-        }
-
-        //adapt values of player info depending on user state
-        this._adaptPlayerInfo(user_info, player_info);
-        //extend the list item base to create filled item
-        this._extendItemToFilledPlayerItem(player_div, user_info, game_info,
-            player_info);
-        //add css classes to style certain game states
-        this._addGameStateClassesToItem(player_div, player_info);
-
-        return player_div;
-    }
-
-    /*---------------------------------------------------------------------*/
-
-    _createPlayerListItemBase() {
+    _createContainerItem(element_update_fns) {
         const item = document.createElement('div');
-        item.classList.add('player-item');
+        item.classList.add('player-item-container');
         item.style.height = `${Globals.player_list_div_height}px`;
+
+        //extend update functions
+        element_update_fns.set_current_player = (is_current_player) => {
+            if (is_current_player) {
+                this._addCurrentPlayerStateToItem(item);
+            } else {
+                this._removeCurrentPlayerStateFromItem(item)
+            }
+        };
+        element_update_fns.set_alive = (is_alive) => {
+            if (is_alive) {
+                this._addDefeatedStateToItem(item);
+            } else {
+                this._removeDefeatedStateFromItem(item);
+            }
+        };
+
         return item;
     }
 
     /*---------------------------------------------------------------------*/
 
-    _styleEmptyItem(item) {
+    _createEmptyPlayerItem() {
+        const item = document.createElement('div');
         item.classList.add('unfilled-player-item');
         item.innerHTML = '- Free -';
+        return item;
     }
 
     /*---------------------------------------------------------------------*/
 
-    _adaptPlayerInfo(user_info, player_info) {
-        //add personal brackets to name if user himself is represented
-        if (user_info.id === player_info.id) {
-            player_info.name += ' (You)';
-        }
-    }
-
-    /*---------------------------------------------------------------------*/
-
-    _extendItemToFilledPlayerItem(item, user_info, game_info, player_info) {
-        item.classList.add('filled-player-item'); //flex properties controlled by css
+    _createFilledPlayerItem(element_update_fns) {
+        const item = document.createElement('div');
+        item.classList.add('filled-player-item');
 
         //create and add win tracker wrap
-        const win_tracker_wrap = this._createWinTrackerWrap(player_info);
+        const win_tracker_wrap = this._createWinTrackerWrap(element_update_fns);
         item.appendChild(win_tracker_wrap);
 
         //create and add div that contains the player name and team
-        const name_tag_wrap = this._createNameTagWrap(user_info, game_info,
-            player_info);
+        const name_tag_wrap = this._createNameTagWrap(element_update_fns);
         item.appendChild(name_tag_wrap);
 
         //create and add wrap for player status with ready state
-        const player_status_wrap = this._createPlayerStatusWrap(player_info);
+        const player_status_wrap = this._createPlayerStatusWrap(element_update_fns);
         item.appendChild(player_status_wrap);
+
+        return item;
     }
 
     /*---------------------------------------------------------------------*/
 
-    _createWinTrackerWrap(player_info) {
+    _createWinTrackerWrap(element_update_fns) {
         const win_tracker_wrap = document.createElement('div');
         win_tracker_wrap.classList.add('win-tacker-wrap');
 
         //create trophy image to represent wins
         const trophy_img = this._createTrophyImage();
         //create div to represent number of wins
-        const win_count = this._createWinCount(player_info);
+        const win_count = this._createWinCount(element_update_fns);
 
         //add components to wrapper in correct order
         win_tracker_wrap.appendChild(trophy_img);
@@ -150,48 +182,66 @@ export default class PlayerListControls {
 
     /*---------------------------------------------------------------------*/
 
-    _createWinCount({wins}) {
+    _createWinCount(element_update_fns) {
+        //create div with spans spelling win count (with "x" symbol)
         const win_count_div = document.createElement('div');
         win_count_div.classList.add('win-count-wrap');
         const x_span = document.createElement('span');
         x_span.innerHTML = 'x';
         const win_span = document.createElement('span');
-        win_span.innerHTML = wins;
         win_count_div.appendChild(x_span);
         win_count_div.appendChild(win_span);
+
+        //extend update functions
+        element_update_fns.set_wins = (wins) => {
+            win_span.innerHTML = wins;
+        };
+
         return win_count_div;
     }
 
     /*---------------------------------------------------------------------*/
 
-    _createNameTagWrap(user_info, game_info, player_info) {
+    _createNameTagWrap(element_update_fns) {
         const name_tag_wrap = document.createElement('div');
         name_tag_wrap.classList.add('name-tag-wrap');
 
         //create and add the actual name tag
-        const name_tag = this._createNameTag(player_info);
-        //create leader crown if player is room lead (is positioned absolute to name_tag)
-        if (player_info.is_room_lead && !game_info.game_in_progress) {
-            const crown_img = this._createCrownImage();
-            name_tag.appendChild(crown_img);
-        }
+        const name_tag = this._createNameTag(element_update_fns);
+        //create leader crown to show if player is room lead
+        const crown_img = this._createCrownImage();
+        crown_img.style.display = 'none';
+        name_tag.appendChild(crown_img);
         name_tag_wrap.appendChild(name_tag);
 
-        //create and add team tag if teams are to be displayed
-        if (game_info.teams_enabled) {
-            const team_tag = this._createTeamTag(user_info, game_info, player_info);
-            name_tag_wrap.appendChild(team_tag);
-        }
+        //create and add team tag to show if teams are toggled
+        const team_tag = this._createTeamTag(element_update_fns);
+        team_tag.style.display = 'none';
+        name_tag_wrap.appendChild(team_tag);
+
+        //extend update functions
+        element_update_fns.set_room_lead = (is_room_lead) => {
+            if (is_room_lead) {
+                crown_img.style.display = 'none';
+            } else {
+                crown_img.style.display = '';
+            }
+        };
 
         return name_tag_wrap;
     }
 
     /*---------------------------------------------------------------------*/
 
-    _createNameTag({name}) {
+    _createNameTag(element_update_fns) {
         const name_tag = document.createElement('div');
         name_tag.classList.add('player-name-tag');
-        name_tag.innerHTML = name;
+
+        //extends update functions
+        element_update_fns.set_name = (name) => {
+            name_tag.innerHTML = name;
+        };
+
         return name_tag;
     }
 
@@ -201,48 +251,48 @@ export default class PlayerListControls {
         const crown_img = document.createElement('img');
         crown_img.src = `${Globals.image_folder_path}/${Globals.images.crown}`;
         crown_img.alt = 'room lead';
-        crown_img.width = 40;
-        crown_img.height = 20;
+        crown_img.width = Globals.image_sizes.crown.width;
+        crown_img.height = Globals.image_sizes.crown.height;
         return crown_img;
     }
 
     /*---------------------------------------------------------------------*/
 
-    _createTeamTag({id: user_id}, {game_in_progress}, player_info) {
+    _createTeamTag(element_update_fns) {
         const team_tag = document.createElement('div');
         team_tag.classList.add('player-team-tag');
 
-        //determine if teams can be set by the client for this player
-        const {id: player_id, team} = player_info;
-        const is_player_user = user_id === player_id;
-        const can_team_be_set = is_player_user && !game_in_progress;
-
-        //unchangeable content in string form
-        let team_str = 'Team: ';
-        if (!can_team_be_set) {
-            team_str += team;
-        }
-        team_tag.innerHTML = team_str;
+        //create div containing the team name
+        const team_name_div = document.createElement('div');
+        team_name_div.classList.add('player-team-name');
+        team_tag.appendChild(team_name_div);
 
         //if client can set team for this player, create form to change it
-        if (can_team_be_set) {
-            const team_change_form = this._createTeamChangeForm(player_info);
-            team_tag.appendChild(team_change_form);
-        }
+        const team_change_form = this._createTeamChangeForm(element_update_fns);
+        team_change_form.style.display = 'none';
+        team_tag.appendChild(team_change_form);
+
+        //extend update functions
+        element_update_fns.set_team_str = (team_str) => {
+            team_name_div.innerHTML = team_str;
+        };
+        element_update_fns.switch_team_visibility = (teams_enabled) => {
+            team_tag.style.display = teams_enabled ? '' : 'none';
+        };
 
         return team_tag;
     }
 
     /*---------------------------------------------------------------------*/
 
-    _createTeamChangeForm({team}) {
+    _createTeamChangeForm(element_update_fns) {
         const form = document.createElement('form');
+        form.classList.add('team-set');
         form.autocomplete = 'off';
         //create input element, set value according to team or remembered value
         const input = document.createElement('input');
         input.type = 'text';
         input.id = 'team-set-text';
-        input.value = this.protect_input ? this._remembered_input : team;
         //only allow (up to 2 digit) integer input
         setInputIntegerFilter(input, 2);
         //scale input size to contained text
@@ -256,19 +306,7 @@ export default class PlayerListControls {
             if (input.value) {
                 //notify server of new team
                 this._socket.emit('change-team', parseInt(input.value));
-                this.protect_input = false;
-            } else {
-                this.protect_input = true;
             }
-        });
-        //refresh existing focus on reload
-        input.addEventListener('focus', () => {
-            this._finish_callbacks.focus_input = () => {
-                document.querySelector('#team-set-text').focus();
-            };
-        });
-        input.addEventListener('blur', () => {
-            delete this._finish_callbacks.focus_input;
         });
         //create label in relation to input's name tag
         const label = document.createElement('label');
@@ -276,43 +314,48 @@ export default class PlayerListControls {
         //finish the form: append children
         form.appendChild(label);
         form.appendChild(input);
+
+        //extend update functions
+        element_update_fns.enable_team_input = (should_enable) => {
+            form.style.display = should_enable ? '' : 'none';
+        };
+        element_update_fns.set_team_input = (team_id) => {
+            input.value = team_id;
+        };
+
         return form;
     }
 
     /*---------------------------------------------------------------------*/
 
-    _createPlayerStatusWrap(player_info) {
+    _createPlayerStatusWrap(element_update_fns) {
         const player_status_wrap = document.createElement('div');
         player_status_wrap.classList.add('player-status-wrap');
         //add ready/not ready image to wrap
-        const rdy_img = this._createReadyStatusImage(player_info);
+        const rdy_img = this._createReadyStatusImage(element_update_fns);
         player_status_wrap.appendChild(rdy_img);
         return player_status_wrap;
     }
 
     /*---------------------------------------------------------------------*/
 
-    _createReadyStatusImage({ready}) {
+    _createReadyStatusImage(element_update_fns) {
         const rdy_img = document.createElement('img');
-        const image_name = ready ? Globals.images.tick : Globals.images.cross;
-        rdy_img.src = `${Globals.image_folder_path}/${image_name}`;
-        rdy_img.alt = ready ? 'ready' : 'not ready';
+        const set_ready = (ready) => {
+            const image_name = ready ? Globals.images.tick : Globals.images.cross;
+            const path = `${Globals.image_folder_path}/${image_name}`;
+            const alt = ready ? 'ready' : 'not ready';
+            rdy_img.src = path;
+            rdy_img.alt = alt;
+        };
+        set_ready(false);
         rdy_img.classList.add('player-list-img');
         rdy_img.width = Globals.player_list_div_height;
+
+        //extend update functions
+        element_update_fns.switch_ready_state = set_ready;
+
         return rdy_img;
-    }
-
-    /*---------------------------------------------------------------------*/
-
-    _addGameStateClassesToItem(item, player_info) {
-        //mark currently active player as such (by css class)
-        if (player_info.is_current_player) {
-            this._addCurrentPlayerStateToItem(item);
-        }
-        //mark defeated players as such (by css class)
-        if (!player_info.alive) {
-            this._addDefeatedStateToItem(item);
-        }
     }
 
     /*---------------------------------------------------------------------*/
@@ -323,7 +366,74 @@ export default class PlayerListControls {
 
     /*---------------------------------------------------------------------*/
 
+    _removeCurrentPlayerStateFromItem(item) {
+        item.classList.remove('current-player');
+    }
+
+    /*---------------------------------------------------------------------*/
+
     _addDefeatedStateToItem(item) {
         item.classList.add('defeated');
+    }
+
+    /*---------------------------------------------------------------------*/
+
+    _removeDefeatedStateFromItem(item) {
+        item.classList.remove('defeated');
+    }
+
+    /*---------------------------------------------------------------------*/
+    /* UPDATING OF INDIVIDUAL ELEMENTS */
+    /*---------------------------------------------------------------------*/
+
+    /*---------------------------------------------------------------------*/
+
+    _updatePlayerListSlotEmpty(i) {
+        const element_update_fns = this._element_update_fns[i];
+        element_update_fns.switch_to_empty();
+    }
+
+    /*---------------------------------------------------------------------*/
+
+    _updatePlayerListSlotFilled(i, user_info, game_info, player_info) {
+        //preprocessing steps
+        this._adaptPlayerInfo(user_info, player_info);
+        const element_update_fns = this._element_update_fns[i];
+
+        //directly transfer received object properties to element states
+        element_update_fns.set_name(player_info.name);
+        element_update_fns.set_wins(player_info.wins);
+        element_update_fns.switch_ready_state(player_info.ready);
+        element_update_fns.set_room_lead(player_info.is_room_lead);
+        element_update_fns.set_current_player(player_info.is_current_player);
+        element_update_fns.set_alive(player_info.alive);
+
+        //decide further element states based on given information
+        element_update_fns.switch_team_visibility(game_info.teams_enabled);
+        let enable_team_input = false;
+        let team_str = 'Team';
+        if (!game_info.game_in_progress && user_info.id === player_info.id) {
+            enable_team_input = true;
+        } else {
+            team_str += ` ${player_info.team}`;
+        }
+        element_update_fns.set_team_str(team_str);
+        if (this._must_set_team_input[i]) {
+            element_update_fns.set_team_input(player_info.team);
+            this._must_set_team_input[i] = false;
+        }
+        element_update_fns.enable_team_input(enable_team_input);
+
+        //show filled element with updated content
+        element_update_fns.switch_to_filled();
+    }
+
+    /*---------------------------------------------------------------------*/
+
+    _adaptPlayerInfo(user_info, player_info) {
+        //add personal brackets to name if user himself is represented
+        if (user_info.id === player_info.id) {
+            player_info.name += ' (You)';
+        }
     }
 }
