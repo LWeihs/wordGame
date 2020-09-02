@@ -1,14 +1,18 @@
 const Globals = require('./globals');
 
 class RoomInfo {
-    constructor(room_name, max_players) {
+    constructor(room_name, max_players, make_private) {
+        //public variables
         this.name = room_name;
+        this.private = !!make_private; //can be undefined as param
+
+        //private variables
         this._game_active = false;
         this._max_players = max_players;
         this._players = new Array(max_players).fill(null);
         this._active_players = 0;
         this._ordered_teams = null; //filled on game start
-
+        //cursors for iteration
         this._cur_player_cursor = null; //iterates players
         this._cur_team_cursor = null; //iterates teams
     }

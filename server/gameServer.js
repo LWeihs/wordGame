@@ -76,10 +76,17 @@ class GameServer {
 
     _setSocketHandlersLobby(socket) {
         socket.on('attempt-redirect-to-game', ({join_type, room: roomName, make_private}) => {
+            const redirect_info = {
+                room_name: undefined,
+                make_private: false,
+            };
             switch (join_type) {
                 case 'random':
-                    //find a valid room name or find a valid new room name
-                    roomName = this._findRoomWithRemainingSlots();
+                    //try to find a room with remaining player slots which is not private
+                    roomName = this._findRoomWithRemainingSlots((room_info) => {
+                        return !room_info.private;
+                    });
+                    //if no such room exists, prompt server to create new room
                     if (!roomName) {
                         roomName = this._name_generator.generate('room', 'name');
                     }
@@ -103,10 +110,13 @@ class GameServer {
                         socket.emit('redirect-error', Globals.error_messages.room_exists);
                         return;
                     }
+                    //no errors, set privacy setting
+                    redirect_info.make_private = make_private;
                     break;
             }
             //no errors, permit redirect
-            socket.emit('permit-redirect', roomName);
+            redirect_info.room_name = roomName;
+            socket.emit('permit-redirect', redirect_info);
         });
     }
 
@@ -162,7 +172,7 @@ class GameServer {
         this._initiallyStatSocket(socket);
 
         //extend socket properties based on received query parameters
-        let {id, name, room} = socket.handshake.query;
+        let {id, name, room, make_private} = socket.handshake.query;
 
         //set unique ID for socket, notify client if new ID is generated
         if (!id) {
@@ -185,9 +195,7 @@ class GameServer {
         //handle room joining
         if (room) {
             socket.target_room = room;
-            this._attemptRoomJoin(socket);
-        } else {
-            //TODO: initial connection
+            this._attemptRoomJoin(socket, make_private);
         }
 
         //socket fields all created, now prepare logging objects
@@ -196,12 +204,12 @@ class GameServer {
 
     /*---------------------------------------------------------------------*/
 
-    _attemptRoomJoin(socket) {
+    _attemptRoomJoin(socket, make_private) {
         const roomName = socket.target_room;
         let room_info = this._getRoomInfo(roomName);
-        if (!room_info) { //room does not exist yet
+        if (!room_info) { //room does not exist yet, apply privacy setting here
             //create tracked room objects
-            this._handleRoomCreation(roomName);
+            this._handleRoomCreation(roomName, make_private);
             //first user to join room gets lead
             this._makeSocketRoomLead(socket);
         } else { //room exist, check if joining is permitted
@@ -220,8 +228,8 @@ class GameServer {
 
     /*---------------------------------------------------------------------*/
 
-    _handleRoomCreation(roomName) {
-        this._createRoomInfo(roomName);
+    _handleRoomCreation(roomName, make_private) {
+        this._createRoomInfo(roomName, make_private);
         this._createRoomGame(roomName);
     }
 
@@ -242,6 +250,7 @@ class GameServer {
         const join_info = {
             max_players: Globals.game.max_players,
             no_remembered_words: Globals.game.no_remembered_words,
+            is_private: room_info.private,
         };
         socket.emit('room-join-accepted', join_info);
 
@@ -336,8 +345,9 @@ class GameServer {
 
     /*---------------------------------------------------------------------*/
 
-    _createRoomInfo(roomName) {
-        this._room_infos[roomName] = new RoomInfo(roomName, Globals.game.max_players);
+    _createRoomInfo(roomName, make_private) {
+        this._room_infos[roomName] = new RoomInfo(roomName, Globals.game.max_players,
+            make_private);
     }
 
     /*---------------------------------------------------------------------*/
@@ -357,9 +367,18 @@ class GameServer {
 
     /*---------------------------------------------------------------------*/
 
-    _findRoomWithRemainingSlots() {
+    /**
+     * Find the name of a room with remaining player slots.
+     *
+     * @param validator {function} - callback to apply to iterated RoomInfo
+     * objects. Only returns names of RoomInfos for which the validator returns
+     * true (optional)
+     * @returns {null|string} - name of room with remaining player slots
+     * @private
+     */
+    _findRoomWithRemainingSlots(validator) {
         for (const room_info of Object.values(this._room_infos)) {
-            if (room_info.canAddPlayer()) {
+            if ((!validator || validator(room_info)) && room_info.canAddPlayer()) {
                 return room_info.name;
             }
         }

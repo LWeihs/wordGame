@@ -45,7 +45,9 @@ function initialize() {
             'No room given! Cannot connect.';
         return;
     }
+    //get further url params
     const name = urlParams.get('userName');
+    const make_private = urlParams.get('makePrivate');
 
     //disable form submits
     disableSubmitAllForms();
@@ -60,7 +62,7 @@ function initialize() {
     //initialize page behavior
     initializePageControls();
     //establish socket connection (will connect to room if possible)
-    initializeSocketIo(room, name);
+    initializeSocketIo(room, name, make_private);
 }
 
 /*---------------------------------------------------------------------*/
@@ -147,11 +149,15 @@ function setPageToGameState() {
  *
  * @param target_room - room to join. Must not be empty!
  * @param name - name to show for player. May be empty, is then randomized
+ * @param make_private - whether to create a private new room
  */
-function initializeSocketIo(target_room, name) {
+function initializeSocketIo(target_room, name, make_private) {
     let query = `source=game_room&room=${target_room}`;
     if (name) {
         query += `&name=${name}`;
+    }
+    if (make_private) {
+        query += `&make_private=true`;
     }
     user_info.target_room = target_room; //log target room
     const socket = io({
@@ -188,11 +194,13 @@ function initializeRoomInteractionEvents(socket) {
 
     //connection handling (accept/reject join request)
     socket.on('room-join-accepted', join_info => {
-        const {max_players, no_remembered_words} = join_info;
+        const {max_players, no_remembered_words, is_private} = join_info;
         //stop any further reconnection attempts (as connection is now achieved)
         connection_controls.stopOngoingConnectionAttempts();
         //set the room name on banner
         banner_controls.setRoomName(user_info.target_room);
+        //set notice about room's privacy setting on banner
+        banner_controls.setPrivateNoticeVisibility(is_private);
         //dynamical creation of elements
         player_list_controls.createPlayerElements(max_players);
         game_controls.createPrevTypedDivs(no_remembered_words);

@@ -337,8 +337,8 @@ class TimedGame {
     /*---------------------------------------------------------------------*/
 
     handleDisconnect() {
-        //skip turn if (any) disconnected player was current active player
-        if (!this._room_info.hasActivePlayer()) {
+        //skip turn if game is ongoing and (any) disconnected player was current active player
+        if (this._room_info.isActive() && !this._room_info.hasActivePlayer()) {
             this._skipCurrentTurn();
         }
     }

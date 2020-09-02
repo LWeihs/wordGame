@@ -7,8 +7,7 @@ import {setInputIntegerFilter} from "../helpers/inputFilter";
  */
 export default class PlayerListControls {
     initControls() {
-        this._game_wrap = document.querySelector('#game-wrap');
-        this._player_list = document.querySelector('#players');
+        this._player_list = document.querySelector('#player-items');
         this._element_update_fns = {}; //filled during element creation
         //control setting of team input field
         this._must_set_team_input = {};
@@ -23,7 +22,10 @@ export default class PlayerListControls {
     /*---------------------------------------------------------------------*/
 
     createPlayerElements(max_players) {
-        for (let i=0; i<max_players; ++i) {
+        //care if server restarts! to be safe: clear any previous elements
+        this._clearExistingElements();
+        //create new elements
+        for (let i = 0; i < max_players; ++i) {
             //create an object to hold quick update functions for created elements
             const element_update_fns = {
                 set_name: () => {},
@@ -41,16 +43,19 @@ export default class PlayerListControls {
             };
             //create player element and insert functions for updating them
             const player_element = this._createPlayerListItem(element_update_fns);
-            //add created element to DOM, memorize the update functions
+            //add created element to DOM
             this._player_list.appendChild(player_element);
+            //set internal data structures for element manipulation
             this._element_update_fns[i] = element_update_fns;
             this._must_set_team_input[i] = true;
-        }}
+        }
+        //perform any remaining steps
+        this._processCreatedPlayerList();
+    }
 
     /*---------------------------------------------------------------------*/
 
     updatePlayerList(user_info, game_info, player_info_arr) {
-        console.log(player_info_arr)
         //create the new entries of player list
         player_info_arr.forEach((player_info, i) => {
             if (!player_info) {
@@ -73,6 +78,12 @@ export default class PlayerListControls {
     /* CREATION OF THE DIFFERENT (PARTS OF) LIST ELEMENTS */
     /*---------------------------------------------------------------------*/
 
+    _clearExistingElements() {
+        this._player_list.innerHTML = '';
+    }
+
+    /*---------------------------------------------------------------------*/
+
     _createPlayerListItem(element_update_fns) {
         //create container with both empty and filled state
         const container = this._createContainerItem(element_update_fns);
@@ -91,6 +102,20 @@ export default class PlayerListControls {
             empty_item.style.display = 'none';
             filled_item.style.display = '';
         };
+        element_update_fns.set_current_player = (is_current_player) => {
+            if (is_current_player) {
+                this._addCurrentPlayerStateToItem(filled_item);
+            } else {
+                this._removeCurrentPlayerStateFromItem(filled_item)
+            }
+        };
+        element_update_fns.set_alive = (is_alive) => {
+            if (is_alive) {
+                this._removeDefeatedStateFromItem(filled_item);
+            } else {
+                this._addDefeatedStateToItem(filled_item);
+            }
+        };
 
         return container;
     }
@@ -101,23 +126,6 @@ export default class PlayerListControls {
         const item = document.createElement('div');
         item.classList.add('player-item-container');
         item.style.height = `${Globals.player_list_div_height}px`;
-
-        //extend update functions
-        element_update_fns.set_current_player = (is_current_player) => {
-            if (is_current_player) {
-                this._addCurrentPlayerStateToItem(item);
-            } else {
-                this._removeCurrentPlayerStateFromItem(item)
-            }
-        };
-        element_update_fns.set_alive = (is_alive) => {
-            if (is_alive) {
-                this._addDefeatedStateToItem(item);
-            } else {
-                this._removeDefeatedStateFromItem(item);
-            }
-        };
-
         return item;
     }
 
@@ -221,11 +229,7 @@ export default class PlayerListControls {
 
         //extend update functions
         element_update_fns.set_room_lead = (is_room_lead) => {
-            if (is_room_lead) {
-                crown_img.style.display = 'none';
-            } else {
-                crown_img.style.display = '';
-            }
+            crown_img.style.display = is_room_lead ? '' : 'none';
         };
 
         return name_tag_wrap;
@@ -236,10 +240,13 @@ export default class PlayerListControls {
     _createNameTag(element_update_fns) {
         const name_tag = document.createElement('div');
         name_tag.classList.add('player-name-tag');
+        const name_div = document.createElement('div');
+        name_div.classList.add('player-name');
+        name_tag.appendChild(name_div);
 
         //extends update functions
         element_update_fns.set_name = (name) => {
-            name_tag.innerHTML = name;
+            name_div.innerHTML = name;
         };
 
         return name_tag;
@@ -383,9 +390,26 @@ export default class PlayerListControls {
     }
 
     /*---------------------------------------------------------------------*/
-    /* UPDATING OF INDIVIDUAL ELEMENTS */
-    /*---------------------------------------------------------------------*/
 
+    _processCreatedPlayerList() {
+        const remaining_space_item = document.querySelector('#remaining-space');
+        //hide unnecessary border if no remaining space remains
+        const react_to_size = () => {
+            if (remaining_space_item.clientHeight === 0) {
+                remaining_space_item.style.border = '0';
+            } else {
+                remaining_space_item.style.border = '';
+            }
+        };
+        //it seems the DOM only gets correct heights after function call, "wait" for that
+        setTimeout(() => {
+            react_to_size();
+        }, 1);
+        window.addEventListener('resize', react_to_size);
+    }
+
+    /*---------------------------------------------------------------------*/
+    /* UPDATING OF INDIVIDUAL ELEMENTS */
     /*---------------------------------------------------------------------*/
 
     _updatePlayerListSlotEmpty(i) {
@@ -405,6 +429,7 @@ export default class PlayerListControls {
         element_update_fns.set_wins(player_info.wins);
         element_update_fns.switch_ready_state(player_info.ready);
         element_update_fns.set_room_lead(player_info.is_room_lead);
+        //setting of css classes
         element_update_fns.set_current_player(player_info.is_current_player);
         element_update_fns.set_alive(player_info.alive);
 

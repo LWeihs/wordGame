@@ -17,56 +17,69 @@
   --player-crown-inset: 4px;
 }
 
-/* flow as column */
+/* flow container elements as column */
 div#players {
   display: flex;
   flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+}
+
+/* flow player elements as column */
+div#player-items {
+  overflow: auto;
+  max-height: 100%;
+  min-height: 0;
+  min-width: 0;
 }
 
 /* dynamically created (div) list elements */
-div#players > div.player-item-container {
+div#player-items > div.player-item-container {
+  width: 100%;
   box-sizing: border-box;
   background-color: var(--player-color-odd);
   /* content flows as row (also centers text for free elements) */
   display: flex;
-  /* general border rule: fill left, right, and top */
+  /* general border rule: fill right and top */
   border-style: solid;
   border-color: var(--player-border-color);
-  border-width: var(--player-border-width) var(--player-border-width) 0 var(--player-border-width);
+  border-width: var(--player-border-width) var(--player-border-width) 0 0;
   /* font styles (to inherit by children) */
   font-family: var(--player-font-family);
   font-size: var(--player-font-size);
 }
 
+/* multiple possible children for container that all fill it */
+div#player-items > div.player-item-container > div {
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 /* every second list element has different background */
-div#players > div:nth-child(2n) {
+div#player-items > div:nth-child(2n) {
   background-color: var(--player-color-even);
 }
 
-/* finish border on last list element */
-div#players div:last-child {
-  border-bottom-width: var(--player-border-width);
-}
-
 /* current player is identified by class */
-div.player-item-container.current-player {
+div#player-items div.filled-player-item.current-player {
   border: var(--player-border-width-selected) solid var(--player-border-color-selected);
 }
 
+/* make space in filled player item if no border is set */
+div#player-items div.filled-player-item:not(.current-player) {
+  padding: var(--player-border-width-selected);
+}
+
 /* remove top border from div after the one representing the current player */
-div.player-item-container.current-player + div {
+div.player-item-container .current-player + div {
   border-top-width: 0;
+  background-color: blue;
 }
 
 /* defeated players are identified by class */
-div#players > div.player-item.defeated {
+div#player-items div.player-item-container > div.defeated {
   background-color: var(--player-color-defeated);
-}
-
-/* multiple possible children for container that all fill it */
-div.player-item-container > div {
-  width: 100%;
-  height: 100%;
 }
 
 /* styles for unfilled player items */
@@ -124,4 +137,12 @@ div.filled-player-item > div.player-status-wrap {
 div.filled-player-item > div.win-tacker-wrap {
   display: flex;
   align-items: center;
+}
+
+/* remaining space after all player elements */
+div#remaining-space {
+  /* finish border of last list element. Is removed when current player class is applied */
+  border-top: var(--player-border-width) solid var(--player-border-color);
+  border-right: var(--player-border-width) solid var(--player-border-color);
+  flex-grow: 1;
 }

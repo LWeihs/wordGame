@@ -1,12 +1,17 @@
 /* center room text in the room banner */
 div.banner {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 55px
 }
 
-/* spacing between text blocks (pretty surrounding and main text) */
+/* text blocks' font information */
 div.banner > div.main {
   font-size: 30px;
-  line-height: 50px;
+}
+
+div.banner > div.private-notice {
+  font-size: 12px;
 }

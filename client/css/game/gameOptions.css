@@ -20,7 +20,6 @@
 
 /* wrapper */
 div#game-opts {
-  border: 1px solid blue;
   padding: var(--opts-box-padding);
   /* flow as column */
   display: flex;

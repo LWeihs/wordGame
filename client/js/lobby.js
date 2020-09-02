@@ -34,20 +34,24 @@ function initializeSocketIo() {
         game_join_controls.displayErrorMessage(error_msg);
     });
 
-    socket.on('permit-redirect', room_name => {
-        redirectToRoom(room_name);
+    socket.on('permit-redirect', redirect_info => {
+        redirectToRoom(redirect_info);
     });
 }
 
 /*---------------------------------------------------------------------*/
 
-function redirectToRoom(room_name) {
+function redirectToRoom({room_name, make_private}) {
     //create url base including room name parameter
     let url = `game?room=${room_name}`;
     //extend url by user name if name is given
     const user_name = game_join_controls.getInputUserName();
     if (user_name) {
         url += `&userName=${user_name}`;
+    }
+    //extend url by privacy setting if make_private is true
+    if (make_private) {
+        url += `&makePrivate=true`;
     }
     //redirect
     location.href = url;

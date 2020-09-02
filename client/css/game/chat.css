@@ -5,7 +5,6 @@
 /* the full chat interface */
 div#chat-wrap {
   padding: var(--chat-padding);
-  border: 1px solid black;
   /* flow as column */
   flex-grow: 1; /*fill remaining space on right side */
   display: flex;

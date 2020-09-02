@@ -30,7 +30,6 @@ div#game {
 
 /* the wrapper for all game elements */
 div#game-elements {
-  border: 1px solid black;
   display: flex;
   justify-content: center;
   align-items: center;

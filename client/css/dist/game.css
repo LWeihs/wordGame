@@ -2,15 +2,20 @@
 
 div.banner {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 55px;
 }
 
-/* spacing between text blocks (pretty surrounding and main text) */
+/* text blocks' font information */
 
 div.banner > div.main {
   font-size: 30px;
-  line-height: 50px;
+}
+
+div.banner > div.private-notice {
+  font-size: 12px;
 }
 :root {
   --chat-padding: 5px;
@@ -20,7 +25,6 @@ div.banner > div.main {
 
 div#chat-wrap {
   padding: var(--chat-padding);
-  border: 1px solid black;
   /* flow as column */
   flex-grow: 1;
   /*fill remaining space on right side */
@@ -114,7 +118,6 @@ div#game {
 /* the wrapper for all game elements */
 
 div#game-elements {
-  border: 1px solid black;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -260,7 +263,6 @@ div#game-idle-message {
 /* wrapper */
 
 div#game-opts {
-  border: 1px solid blue;
   padding: var(--opts-box-padding);
   /* flow as column */
   display: flex;
@@ -420,64 +422,78 @@ button {
   --player-crown-inset: 4px;
 }
 
-/* flow as column */
+/* flow container elements as column */
 
 div#players {
   display: flex;
   flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+}
+
+/* flow player elements as column */
+
+div#player-items {
+  overflow: auto;
+  max-height: 100%;
+  min-height: 0;
+  min-width: 0;
 }
 
 /* dynamically created (div) list elements */
 
-div#players > div.player-item-container {
+div#player-items > div.player-item-container {
+  width: 100%;
   box-sizing: border-box;
   background-color: var(--player-color-odd);
   /* content flows as row (also centers text for free elements) */
   display: flex;
-  /* general border rule: fill left, right, and top */
+  /* general border rule: fill right and top */
   border-style: solid;
   border-color: var(--player-border-color);
-  border-width: var(--player-border-width) var(--player-border-width) 0 var(--player-border-width);
+  border-width: var(--player-border-width) var(--player-border-width) 0 0;
   /* font styles (to inherit by children) */
   font-family: var(--player-font-family);
   font-size: var(--player-font-size);
 }
 
-/* every second list element has different background */
+/* multiple possible children for container that all fill it */
 
-div#players > div:nth-child(2n) {
-  background-color: var(--player-color-even);
+div#player-items > div.player-item-container > div {
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-/* finish border on last list element */
+/* every second list element has different background */
 
-div#players div:last-child {
-  border-bottom-width: var(--player-border-width);
+div#player-items > div:nth-child(2n) {
+  background-color: var(--player-color-even);
 }
 
 /* current player is identified by class */
 
-div.player-item-container.current-player {
+div#player-items div.filled-player-item.current-player {
   border: var(--player-border-width-selected) solid var(--player-border-color-selected);
+}
+
+/* make space in filled player item if no border is set */
+
+div#player-items div.filled-player-item:not(.current-player) {
+  padding: var(--player-border-width-selected);
 }
 
 /* remove top border from div after the one representing the current player */
 
-div.player-item-container.current-player + div {
+div.player-item-container .current-player + div {
   border-top-width: 0;
+  background-color: blue;
 }
 
 /* defeated players are identified by class */
 
-div#players > div.player-item.defeated {
+div#player-items div.player-item-container > div.defeated {
   background-color: var(--player-color-defeated);
-}
-
-/* multiple possible children for container that all fill it */
-
-div.player-item-container > div {
-  width: 100%;
-  height: 100%;
 }
 
 /* styles for unfilled player items */
@@ -548,6 +564,15 @@ div.filled-player-item > div.player-status-wrap {
 div.filled-player-item > div.win-tacker-wrap {
   display: flex;
   align-items: center;
+}
+
+/* remaining space after all player elements */
+
+div#remaining-space {
+  /* finish border of last list element. Is removed when current player class is applied */
+  border-top: var(--player-border-width) solid var(--player-border-color);
+  border-right: var(--player-border-width) solid var(--player-border-color);
+  flex-grow: 1;
 }
 /* TEXT STYLES */
 
@@ -654,6 +679,7 @@ div.time-ticker {
   --player-width: 290px;
   /* border between major ui elements */
   --player-major-element-border: 1px solid black;
+  --player-opts-border: 1px solid blue;
 }
 
 html,
@@ -671,16 +697,31 @@ div#page-wrap {
   display: none;
   /* hidden until connect, then must be set to flex */
   flex-direction: column;
-  height: 100%;
+  height: 100vh;
   min-width: var(--page-min-width);
 }
 
-/* column to contain left and right column content */
+/* column to contain the different page elements on a 2x2 grid */
 
 div#game-wrap {
   display: grid;
-  grid-template-rows: 1fr auto;
+  grid-template-rows: minmax(0, 1fr) auto;
   grid-template-columns: var(--player-width) 1fr;
   flex-grow: 1;
   /* game content fills remaining bottom space below banner */
+}
+
+/* borders: care for no overlaps */
+
+div#game-opts {
+  border-top: var(--player-opts-border);
+  border-right: var(--player-opts-border);
+}
+
+div#game-elements {
+  border-top: var(--player-major-element-border);
+}
+
+div#chat-wrap {
+  border-top: var(--player-major-element-border);
 }
