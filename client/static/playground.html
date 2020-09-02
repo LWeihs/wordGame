@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            margin: 0;
+        }
+        #flexer {
+            height: 100vh;
+        }
+        #grid {
+            height: 100%;
+            min-height: 0;
+            min-width: 0;
+            box-sizing: border-box;
+            display: grid;
+            grid-template-rows: auto minmax(0, 1fr) auto;
+            grid-auto-columns: 290px 1fr;
+        }
+        #banner {
+            height: 120px;
+            background-color: #ff66ff;
+        }
+        #container {
+            background-color: red;
+            display: flex;
+            flex-direction: column;
+            overflow: auto;
+        }
+        #fixed {
+            background-color: orange;
+        }
+        #grow {
+            flex-grow: 1;
+            background-color: green;
+        }
+        .item {
+            background-color: orange;
+            border: 1px solid black;
+            box-sizing: border-box;
+            height: 85px;
+        }
+        #other {
+            background-color: black;
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div id="flexer">
+        <!--<div id="banner"></div>-->
+
+        <div id="grid">
+            <div id="container">
+                <div id="fixed">
+                    <div class="item"></div>
+                    <div class="item"></div>
+                    <div class="item"></div>
+                    <div class="item"></div>
+                    <div class="item"></div>
+                    <div class="item"></div>
+                    <div class="item"></div>
+                    <div class="item"></div>
+                    <div class="item"></div>
+                    <div class="item"></div>
+                </div>
+                <div id="grow"></div>
+            </div>
+            <div id="other"></div>
+        </div>
+    </div>
+
+</body>
+</html>
