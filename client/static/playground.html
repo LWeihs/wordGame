@@ -7,27 +7,27 @@
         body {
             margin: 0;
         }
-        #flexer {
-            height: 100vh;
-        }
         #grid {
-            height: 100%;
-            min-height: 0;
-            min-width: 0;
+            height: 100vh;
             box-sizing: border-box;
             display: grid;
             grid-template-rows: auto minmax(0, 1fr) auto;
-            grid-auto-columns: 290px 1fr;
+            grid-auto-columns: 290px minmax(0, 1fr) 100px;
+            grid-template-areas: "banner banner nav"
+                "stacked right nav"
+                "footer footer nav";
         }
         #banner {
             height: 120px;
             background-color: #ff66ff;
+            grid-area: banner;
         }
         #container {
             background-color: red;
             display: flex;
             flex-direction: column;
             overflow: auto;
+            /*grid-area: stacked;*/
         }
         #fixed {
             background-color: orange;
@@ -44,33 +44,40 @@
         }
         #other {
             background-color: black;
-            height: 300px;
+            height: 200px;
+            grid-area: footer;
+        }
+        #right {
+            background-color: #ff3333;
+            grid-area: right;
+        }
+        #nav {
+            background-color: #66ff33;
+            grid-area: nav;
         }
     </style>
 </head>
 <body>
-    <div id="flexer">
-        <!--<div id="banner"></div>-->
-
-        <div id="grid">
-            <div id="container">
-                <div id="fixed">
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                    <div class="item"></div>
-                </div>
-                <div id="grow"></div>
+    <div id="grid">
+        <div id="banner"></div>
+        <div id="container">
+            <div id="fixed">
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
             </div>
-            <div id="other"></div>
+            <div id="grow"></div>
         </div>
+        <div id="right"></div>
+        <div id="other"></div>
+        <div id="nav"></div>
     </div>
-
 </body>
 </html>

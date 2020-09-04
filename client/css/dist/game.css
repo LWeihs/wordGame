@@ -1,3 +1,7 @@
+div#banner-header {
+  height: 55px;
+}
+
 /* center room text in the room banner */
 
 div.banner {
@@ -5,7 +9,6 @@ div.banner {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 55px;
 }
 
 /* text blocks' font information */
@@ -26,18 +29,19 @@ div.banner > div.private-notice {
 div#chat-wrap {
   padding: var(--chat-padding);
   /* flow as column */
-  flex-grow: 1;
-  /*fill remaining space on right side */
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 /* chat window fills as much space as possible above the input */
 
 div.chat {
   flex-grow: 1;
+  max-width: 100%;
   /* prevent content from overflowing vertically */
-  overflow-y: scroll;
+  overflow-y: auto;
+  overflow-x: auto;
   flex-basis: 0;
 }
 
@@ -239,6 +243,7 @@ div#your-turn-label-right {
 
 div#game-idle-message {
   margin: var(--game-idle-message_margin);
+  text-align: center;
 }
 :root {
   /* minimum sizes of option elements */
@@ -291,10 +296,6 @@ div#game-opts-interaction {
 }
 
 /* placement within grid */
-
-div.grid-container {
-  display: contents;
-}
 
 .game-opts-setting {
   grid-column-start: setting-start;
@@ -364,7 +365,6 @@ form#turn-timer-form input {
   border: 1px solid black;
   text-align: center;
   font-size: var(--opts-text-font-size);
-  font-family: serif;
   color: black;
 }
 
@@ -400,6 +400,10 @@ button#game-start-button {
   min-width: var(--opts-button-min-width);
   min-height: var(--opts-button-min-height);
 }
+* {
+  font-family: "Arial", serif;
+}
+
 button {
   cursor: pointer;
 }
@@ -410,7 +414,6 @@ button {
   --player-color-defeated: #808080;
   --player-color-background: #a6a6a6;
   /* font information */
-  --player-font-family: serif;
   --player-font-size: 14px;
   /* regular border style of player (div) list elements */
   --player-border-width: 1px;
@@ -453,7 +456,6 @@ div#player-items > div.player-item-container {
   border-color: var(--player-border-color);
   border-width: var(--player-border-width) var(--player-border-width) 0 0;
   /* font styles (to inherit by children) */
-  font-family: var(--player-font-family);
   font-size: var(--player-font-size);
 }
 
@@ -641,6 +643,12 @@ button.inactive-action {
 .dropright:hover .dropright-bridge {
   display: block;
 }
+
+/* GRID */
+
+div.grid-container {
+  display: contents;
+}
 :root {
   /* element surrounding the text */
   --timer-radius: 60px;
@@ -680,35 +688,58 @@ div.time-ticker {
   /* border between major ui elements */
   --player-major-element-border: 1px solid black;
   --player-opts-border: 1px solid blue;
-}
-
-html,
-body {
-  height: 100%;
+  /* fill in, overwritten by js */
+  --app-height: 100%;
+  --app-width: 100%;
 }
 
 body {
   margin: 0;
 }
 
-/* full page flows as column */
+/* full page grid layout */
 
 div#page-wrap {
   display: none;
-  /* hidden until connect, then must be set to flex */
-  flex-direction: column;
+  /* hidden until connect, then must be set to grid */
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-columns: var(--player-width) 1fr;
+  grid-template-areas: "banner banner"
+    "players game"
+    "opts chat";
   height: 100vh;
-  min-width: var(--page-min-width);
+  width: 100vw;
 }
 
-/* column to contain the different page elements on a 2x2 grid */
+@media not all and (hover:hover) {
+  html,
+  body,
+  div#page-wrap {
+    height: var(--app-height);
+    width: var(--app-width);
+  }
+}
 
-div#game-wrap {
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
-  grid-template-columns: var(--player-width) 1fr;
-  flex-grow: 1;
-  /* game content fills remaining bottom space below banner */
+/* placement within the grid */
+
+div#banner-header {
+  grid-area: banner;
+}
+
+div#players {
+  grid-area: players;
+}
+
+div#game-content {
+  grid-area: game;
+}
+
+div#game-opts {
+  grid-area: opts;
+}
+
+div#chat-wrap {
+  grid-area: chat;
 }
 
 /* borders: care for no overlaps */

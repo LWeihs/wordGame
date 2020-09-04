@@ -1,4 +1,5 @@
 import Globals from "./globals";
+import scaleViewportUnits from "./helpers/scaleVh";
 import disableSubmitAllForms from "./helpers/formDisable";
 import BannerControls from "./game/bannerControls";
 import ConnectionControls from "./game/connectionControls";
@@ -8,6 +9,9 @@ import TimerControls from "./game/timerControls";
 import ChatControls from "./game/chatControls";
 import OptionControls from "./game/optionControls";
 import GameStartControls from "./game/gameStarting";
+
+//make sure viewport units work on mobile
+scaleViewportUnits();
 
 //log important information about the user (received on established server connection)
 let user_info = {
@@ -120,6 +124,7 @@ function setPageToDefaultState() {
     timer_controls.clearTimerInterval();
     //hide game content, reset its various text fields
     game_controls.hideGameContent();
+    game_controls.showPreGameContent();
     game_controls.reset();
     //enable ready/start buttons
     if (!user_info.is_lead) {
@@ -135,6 +140,7 @@ function setPageToDefaultState() {
  */
 function setPageToGameState() {
     game_controls.unblockIdleMessageSetting();
+    game_controls.hidePreGameContent();
     game_controls.clearIdleMessage();
     game_controls.showGameContent();
     game_start_controls.disableReadyButton();
@@ -254,6 +260,11 @@ function initializeInformationRefreshing(socket) {
         game_info.teams_enabled = opts.teams;
         const opts_texts = translateGameOptsToClientText(opts);
         option_controls.setOptions(opts_texts, force_override);
+    });
+
+    //process newly received fill for chat input
+    socket.on('fill-chat-input', chat_fill => {
+        chat_controls.fillTextInput(chat_fill);
     });
 
     //process newly received chat message

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Game</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1 shrink-to-fit=yes">
     <!-- fonts -->
     <link rel="stylesheet" href="fonts/pizzabot/pizzabot.css">
     <!-- element styling -->
@@ -18,107 +18,105 @@
         <div class="main"></div>
         <div class="private-notice">PRIVATE ROOM</div>
     </div>
-    <div id="game-wrap">
 
-        <!-- list of players currently in the room -->
-        <div id="players">
-            <div id="player-items"></div>
-            <div id="remaining-space"></div>
-        </div>
+    <!-- list of players currently in the room -->
+    <div id="players">
+        <div id="player-items"></div>
+        <div id="remaining-space"></div>
+    </div>
 
-        <!-- elements directly associated with the game itself -->
-        <div id="game-elements">
-            <!-- actual game content -->
-            <div id="game-content">
-                <!-- timer to signal remaining time until answer is required -->
-                <div id="time-ticker-wrap" class="time-ticker-wrap">
-                    <div id=time-ticker class="time-ticker"></div>
-                </div>
-                <!-- show last 2 typed words and first letter of next word to type -->
-                <div id="game-upper">
-                    <div class="next-word-hint"></div>
-                </div>
-                <!-- show the other players what current player is typing -->
-                <div id="game-lower">
-                    <div id="game-cur-player-tag">Gasto</div>
-                    <img id="game-arrow-img" src="images/cartoon-arrow.png" alt="=>">
-                    <div id="input-showing">
-                        <div id="game-typed-word"></div>
-                        <div id="typing-error"></div>
-                    </div>
-                </div>
-                <!-- input bar to participate in game -->
-                <form id="game-input-form" class="game-input" autocomplete="off">
-                    <label for="game-input-text"></label>
-                    <input type="text" id="game-input-text">
-                </form>
-                <!-- text to show current player that it is his turn -->
-                <div id="your-turn-label-left" class="your-turn-label vertical-text">YOUR</div>
-                <div id="your-turn-label-right" class="your-turn-label vertical-text">TURN</div>
+    <!-- elements directly associated with the game itself -->
+    <div id="game-elements" class="grid-container">
+        <!-- actual game content -->
+        <div id="game-content">
+            <!-- timer to signal remaining time until answer is required -->
+            <div id="time-ticker-wrap" class="time-ticker-wrap">
+                <div id=time-ticker class="time-ticker"></div>
             </div>
-            <!-- div to show waiting/victory message -->
-            <div id="game-idle-message"></div>
-        </div>
-
-        <!-- options to set for the game + button to signal 'ready'-state/start game -->
-        <div id="game-opts">
-            <div id="game-opts-tag">Game Options</div>
-            <div id="game-opts-interaction">
-                <div id="game-opts-names" class="grid-container">
-                    <div class="game-opts-name">Mode:</div>
-                    <div class="game-opts-name">Teams:</div>
-                    <div class="game-opts-name">Turn Time:</div>
-                </div>
-                <!-- settings for regular players (only see currently taken one) -->
-                <div id="game-opts-settings-fixed" class="game-opts-settings grid-container">
-                    <div class="game-opts-setting server-set mode">Last Letter</div>
-                    <div class="game-opts-setting server-set teams">Off</div>
-                    <div class="game-opts-setting server-set timer">8</div>
-                </div>
-                <!-- settings for room lead (can change settings at will) -->
-                <div id="game-opts-settings-changeable" class="game-opts-settings grid-container">
-                    <div class="dropright game-opts-setting">
-                        <div class="dropright-choice">
-                            <div class="cur-choice server-set mode">Last Letter</div>
-                            <div class="dropright-bridge"></div>
-                        </div>
-                        <div class="dropright-content">
-                            <div>Last Letter</div>
-                        </div>
-                    </div>
-                    <div class="dropright game-opts-setting teams">
-                        <div class="dropright-choice">
-                            <div class="cur-choice server-set teams">Off</div>
-                            <div class="dropright-bridge"></div>
-                        </div>
-                        <div class="dropright-content">
-                            <div>On</div>
-                            <div>Off</div>
-                        </div>
-                    </div>
-                    <form id="turn-timer-form" class="game-opts-setting" autocomplete="off">
-                        <label for="turn-timer-input"></label>
-                        <input id="turn-timer-input" class="server-overridable timer" value="8">
-                    </form>
+            <!-- show last 2 typed words and first letter of next word to type -->
+            <div id="game-upper">
+                <div class="next-word-hint"></div>
+            </div>
+            <!-- show the other players what current player is typing -->
+            <div id="game-lower">
+                <div id="game-cur-player-tag">Gasto</div>
+                <img id="game-arrow-img" src="images/cartoon-arrow.png" alt="=>">
+                <div id="input-showing">
+                    <div id="game-typed-word"></div>
+                    <div id="typing-error"></div>
                 </div>
             </div>
-            <div id="game-start-wrap">
-                <button id="game-ready-button" class="positive-action rounded">Ready!</button>
-                <button id="game-start-button" class="inactive-action rounded" disabled>Start!</button>
-            </div>
+            <!-- input bar to participate in game -->
+            <form id="game-input-form" class="game-input" autocomplete="off">
+                <label for="game-input-text"></label>
+                <input type="text" id="game-input-text">
+            </form>
+            <!-- text to show current player that it is his turn -->
+            <div id="your-turn-label-left" class="your-turn-label vertical-text">YOUR</div>
+            <div id="your-turn-label-right" class="your-turn-label vertical-text">TURN</div>
         </div>
+        <!-- div to show waiting/victory message -->
+        <div id="game-idle-message"></div>
+    </div>
 
-        <!-- window to chat with other players of the room -->
-        <div id="chat-wrap">
-            <!-- <div id="chat-text-wrapper"> -->
-            <div id="chat-text-area" class="chat"></div>
-            <!-- </div> -->
-            <div id="chat-form-container">
-                <form id="chat-input-form" class="chat-input" autocomplete="off">
-                    <label for="chat-input-text"></label>
-                    <input type="text" id="chat-input-text">
+    <!-- options to set for the game + button to signal 'ready'-state/start game -->
+    <div id="game-opts">
+        <div id="game-opts-tag">Game Options</div>
+        <div id="game-opts-interaction">
+            <div id="game-opts-names" class="grid-container">
+                <div class="game-opts-name">Mode:</div>
+                <div class="game-opts-name">Teams:</div>
+                <div class="game-opts-name">Turn Time:</div>
+            </div>
+            <!-- settings for regular players (only see currently taken one) -->
+            <div id="game-opts-settings-fixed" class="game-opts-settings grid-container">
+                <div class="game-opts-setting server-set mode">Last Letter</div>
+                <div class="game-opts-setting server-set teams">Off</div>
+                <div class="game-opts-setting server-set timer">8</div>
+            </div>
+            <!-- settings for room lead (can change settings at will) -->
+            <div id="game-opts-settings-changeable" class="game-opts-settings grid-container">
+                <div class="dropright game-opts-setting">
+                    <div class="dropright-choice">
+                        <div class="cur-choice server-set mode">Last Letter</div>
+                        <div class="dropright-bridge"></div>
+                    </div>
+                    <div class="dropright-content">
+                        <div>Last Letter</div>
+                    </div>
+                </div>
+                <div class="dropright game-opts-setting teams">
+                    <div class="dropright-choice">
+                        <div class="cur-choice server-set teams">Off</div>
+                        <div class="dropright-bridge"></div>
+                    </div>
+                    <div class="dropright-content">
+                        <div>On</div>
+                        <div>Off</div>
+                    </div>
+                </div>
+                <form id="turn-timer-form" class="game-opts-setting" autocomplete="off">
+                    <label for="turn-timer-input"></label>
+                    <input id="turn-timer-input" class="server-overridable timer" value="8">
                 </form>
             </div>
+        </div>
+        <div id="game-start-wrap">
+            <button id="game-ready-button" class="positive-action rounded">Ready!</button>
+            <button id="game-start-button" class="inactive-action rounded" disabled>Start!</button>
+        </div>
+    </div>
+
+    <!-- window to chat with other players of the room -->
+    <div id="chat-wrap">
+        <!-- <div id="chat-text-wrapper"> -->
+        <div id="chat-text-area" class="chat"></div>
+        <!-- </div> -->
+        <div id="chat-form-container">
+            <form id="chat-input-form" class="chat-input" autocomplete="off">
+                <label for="chat-input-text"></label>
+                <input type="text" id="chat-input-text">
+            </form>
         </div>
     </div>
 </div>
@@ -133,7 +131,7 @@
 <!-- SCRIPTS -->
 <script src="socket.io.js"></script>
 <!-- distributed client script -->
-<script src="game.js"></script>
+<script src="game.min.js"></script>
 
 </body>
 </html>

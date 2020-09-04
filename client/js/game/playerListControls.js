@@ -40,6 +40,7 @@ export default class PlayerListControls {
                 set_alive: () => {},
                 switch_to_empty: () => {},
                 switch_to_filled: () => {},
+                bind_event_to_filled: () => {},
             };
             //create player element and insert functions for updating them
             const player_element = this._createPlayerListItem(element_update_fns);
@@ -122,7 +123,7 @@ export default class PlayerListControls {
 
     /*---------------------------------------------------------------------*/
 
-    _createContainerItem(element_update_fns) {
+    _createContainerItem() {
         const item = document.createElement('div');
         item.classList.add('player-item-container');
         item.style.height = `${Globals.player_list_div_height}px`;
@@ -155,6 +156,11 @@ export default class PlayerListControls {
         //create and add wrap for player status with ready state
         const player_status_wrap = this._createPlayerStatusWrap(element_update_fns);
         item.appendChild(player_status_wrap);
+
+        //extend update functions
+        element_update_fns.bind_event_to_filled = (type, callback) => {
+            item.addEventListener(type, callback);
+        };
 
         return item;
     }
@@ -448,6 +454,11 @@ export default class PlayerListControls {
             this._must_set_team_input[i] = false;
         }
         element_update_fns.enable_team_input(enable_team_input);
+
+        //bind further desired functionality to event listeners
+        element_update_fns.bind_event_to_filled('dblclick', () => {
+            this._socket.emit('whisper-target-player', player_info.id);
+        });
 
         //show filled element with updated content
         element_update_fns.switch_to_filled();

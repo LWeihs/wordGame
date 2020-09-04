@@ -100,6 +100,18 @@ export default class GameControls {
 
     /*---------------------------------------------------------------------*/
 
+    hidePreGameContent() {
+        this._idle_message.style.display = 'none';
+    }
+
+    /*---------------------------------------------------------------------*/
+
+    showPreGameContent() {
+        this._idle_message.style.display = '';
+    }
+
+    /*---------------------------------------------------------------------*/
+
     handleActivePlayerChange(user_info, next_player_info) {
         //show current turn reminders to active players, disable for inactive
         let user_is_active = false;

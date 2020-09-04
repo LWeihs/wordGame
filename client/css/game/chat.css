@@ -6,16 +6,18 @@
 div#chat-wrap {
   padding: var(--chat-padding);
   /* flow as column */
-  flex-grow: 1; /*fill remaining space on right side */
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 /* chat window fills as much space as possible above the input */
 div.chat {
   flex-grow: 1;
+  max-width: 100%;
   /* prevent content from overflowing vertically */
-  overflow-y: scroll;
+  overflow-y: auto;
+  overflow-x: auto;
   flex-basis: 0;
 }
 

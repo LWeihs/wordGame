@@ -6,30 +6,48 @@
   /* border between major ui elements */
   --player-major-element-border: 1px solid black;
   --player-opts-border: 1px solid blue;
-}
-
-html, body {
-  height: 100%;
+  /* fill in, overwritten by js */
+  --app-height: 100%;
+  --app-width: 100%;
 }
 
 body {
   margin: 0;
 }
 
-/* full page flows as column */
+/* full page grid layout */
 div#page-wrap {
-  display: none; /* hidden until connect, then must be set to flex */
-  flex-direction: column;
+  display: none; /* hidden until connect, then must be set to grid */
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-columns: var(--player-width) 1fr;
+  grid-template-areas: "banner banner"
+    "players game"
+    "opts chat";
   height: 100vh;
-  min-width: var(--page-min-width);
+  width: 100vw;
+}
+@media not all and (hover:hover) {
+  html, body, div#page-wrap {
+    height: var(--app-height);
+    width: var(--app-width);
+  }
 }
 
-/* column to contain the different page elements on a 2x2 grid */
-div#game-wrap {
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
-  grid-template-columns: var(--player-width) 1fr;
-  flex-grow: 1; /* game content fills remaining bottom space below banner */
+/* placement within the grid */
+div#banner-header {
+  grid-area: banner;
+}
+div#players {
+  grid-area: players;
+}
+div#game-content {
+  grid-area: game;
+}
+div#game-opts {
+  grid-area: opts;
+}
+div#chat-wrap {
+  grid-area: chat;
 }
 
 /* borders: care for no overlaps */

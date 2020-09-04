@@ -5,7 +5,6 @@
   --player-color-defeated: #808080;
   --player-color-background: #a6a6a6;
   /* font information */
-  --player-font-family: serif;
   --player-font-size: 14px;
   /* regular border style of player (div) list elements */
   --player-border-width: 1px;
@@ -45,7 +44,6 @@ div#player-items > div.player-item-container {
   border-color: var(--player-border-color);
   border-width: var(--player-border-width) var(--player-border-width) 0 0;
   /* font styles (to inherit by children) */
-  font-family: var(--player-font-family);
   font-size: var(--player-font-size);
 }
 

@@ -18,7 +18,7 @@ export default class ConnectionControls {
 
     switchVisibilityToPageContent() {
         this._connect_message_wrap.style.display = 'none';
-        this._page_content.style.display = 'flex';
+        this._page_content.style.display = 'grid';
     }
 
     /*---------------------------------------------------------------------*/

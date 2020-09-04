@@ -45,9 +45,6 @@ div#game-opts-interaction {
 }
 
 /* placement within grid */
-div.grid-container {
-  display: contents;
-}
 
 .game-opts-setting {
   grid-column-start: setting-start;
@@ -113,7 +110,6 @@ form#turn-timer-form input {
   border: 1px solid black;
   text-align: center;
   font-size: var(--opts-text-font-size);
-  font-family: serif;
   color: black;
 }
 

@@ -1,3 +1,6 @@
+import {setInputLengthFilter} from "../helpers/inputFilter";
+import Globals from "../globals";
+
 export default class ChatControls {
     constructor() {
         this._chat = '';
@@ -13,6 +16,7 @@ export default class ChatControls {
             text_field: document.querySelector('#chat-text-area'),
         };
 
+        setInputLengthFilter(this._controls.input_text, Globals.chat_max_len_message);
         this._controls.input_form.addEventListener('submit', (e) => {
             e.preventDefault();
             if (!this._socket) return;
@@ -24,6 +28,12 @@ export default class ChatControls {
 
     initSocketEvents(socket) {
         this._socket = socket;
+    }
+
+    /*---------------------------------------------------------------------*/
+
+    fillTextInput(fill_msg) {
+        this._controls.input_text.value = fill_msg;
     }
 
     /*---------------------------------------------------------------------*/

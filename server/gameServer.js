@@ -143,6 +143,10 @@ class GameServer {
         socket.on('retry-connect', () => {
             this._attemptRoomJoin(socket);
         });
+        //handle whisper target send by socket
+        socket.on('whisper-target-player', (target_id) => {
+            this._handleWhisperTargeting(socket, target_id);
+        });
         //handle chat input send by socket
         socket.on('process-chat-input', msg => {
             this._processChatMessage(socket, msg);
@@ -529,13 +533,31 @@ class GameServer {
 
     /*---------------------------------------------------------------------*/
 
+    _handleWhisperTargeting(socket, target_id) {
+        const target_socket = this._findSocketByUserId(target_id);
+        const chat_fill =
+            `${Globals.chat.commands.whisper} ${target_socket.shown_name} `;
+        socket.emit('fill-chat-input', chat_fill);
+    }
+
+    /*---------------------------------------------------------------------*/
+
     _processChatMessage(socket, raw_msg) {
-        if (this._isMessageChatCommand(raw_msg)) {
-            this._processChatCommand(socket, raw_msg);
+        const prep_msg = this._preprocessChatMessage(raw_msg);
+        if (this._isMessageChatCommand(prep_msg)) {
+            this._processChatCommand(socket, prep_msg);
         } else { //message is regular chat message
-            const msg = this._constructRegularChatMessage(socket.name, raw_msg);
+            const msg = this._constructRegularChatMessage(socket.name, prep_msg);
             this._emitMessageToChattersInRoom(socket.room, msg);
         }
+    }
+
+    /*---------------------------------------------------------------------*/
+
+    _preprocessChatMessage(msg) {
+        return msg.length > Globals.chat.max_len_message
+            ? msg.substring(0, Globals.chat.max_len_message)
+            : msg;
     }
 
     /*---------------------------------------------------------------------*/
@@ -561,12 +583,12 @@ class GameServer {
         const command = semantic_analyser.findNext();
         let msg;
         switch (command) {
-            case '/w':
+            case Globals.chat.commands.whisper:
                 const recipient = semantic_analyser.findNext();
                 msg = semantic_analyser.getRemainingMessage();
                 this._processPrivateMessage(socket, recipient, msg, log_error);
                 break;
-            case '/r':
+            case Globals.chat.commands.respond:
                 msg = semantic_analyser.getRemainingMessage();
                 this._processQuickResponse(socket, msg, log_error);
                 break;

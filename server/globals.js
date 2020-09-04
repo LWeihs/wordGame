@@ -8,6 +8,13 @@ const Globals = {
         player: 'animals.json',
         room: 'countries.json',
     },
+    chat: {
+        max_len_message: 250,
+        commands: {
+            whisper: '/w',
+            respond: '/r',
+        },
+    },
     game: {
         max_players: 10,
         no_remembered_words: 6,
@@ -15,7 +22,6 @@ const Globals = {
         language: 'en',
         max_len_start_word: 10,
     },
-
     game_text: {
         filler: '', //should not be shown, but used for error cases
         idle_only_one_player: 'Waiting for at least one more player to join...',

@@ -1,10 +1,13 @@
+div#banner-header {
+  height: 55px;
+}
+
 /* center room text in the room banner */
 div.banner {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 55px
 }
 
 /* text blocks' font information */
